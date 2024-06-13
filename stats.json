@@ -1,0 +1,14 @@
+{
+    "player": {
+      "score_spell": {
+        "id": 10,
+        "name": "Score of spells learned",
+        "type": "int"
+      },
+      "score_familiar": {
+        "id": 11,
+        "name": "Familiar score",
+        "type": "int"
+      }
+    }
+  }

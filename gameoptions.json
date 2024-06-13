@@ -1,0 +1,37 @@
+{
+
+    "100": {
+        "name": "Game options",
+        "values": {
+            "1": {
+                "name": "Normal", 
+                "tmdisplay": "Normal", 
+                "description": "Play with the 3 Sets mixed (not recommended for beginners)"
+            },
+
+            "2": {
+                "name": "Set 1", 
+                "tmdisplay": "Set 1", 
+                "description": "Play with Set 1 (recommended for beginners)"
+            },
+    
+            "3": {
+                "name": "Set 2", 
+                "tmdisplay": "Set 2", 
+                "description": "Play with Set 2"
+            },
+
+            "4": {
+                "name": "Set 3", 
+                "tmdisplay": "Set 3", 
+                "description": "Play with Set 3"
+            }
+    
+        },
+        
+        
+        "default": 1
+              
+            }
+
+}
