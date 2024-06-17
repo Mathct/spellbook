@@ -461,7 +461,7 @@
     
 }
 
-
+/*
 .cardtoolset1 {
     width: 225px;
     height: 385.5px;
@@ -497,6 +497,7 @@
   border-radius: 8px;
   
 }
+  
 
 .aidetool{
   width: 225px;
@@ -511,7 +512,7 @@
   background-size: 400% 200%;
   
 
-}
+}*/
 
 .materiacard.selectable .materia { 
   pointer-events: none !important; 
