@@ -68,7 +68,7 @@ class Card37 extends Card
             $ret['buttons'][] = 'validate37store3';
         }
 
-        if (($nombreautel==2)||($nombrefamilier==12))
+        if ((($nombreautel==2)&&($nombrefamilier<=12))||(($nombreautel>=2)&&($nombrefamilier==12)))
         {
             $ret['titleyou'] = clienttranslate('${you} must select 2 Materia from the Altar to store');
             $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
@@ -79,7 +79,7 @@ class Card37 extends Card
             $ret['buttons'][] = 'validate37store2';
         }
 
-        if (($nombreautel==1)||($nombrefamilier==13))
+        if ((($nombreautel==1)&&($nombrefamilier<=13))||(($nombreautel>=1)&&($nombrefamilier==13)))
         {
             $ret['titleyou'] = clienttranslate('${you} must select 1 Materia from the Altar to store');
             $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
@@ -87,11 +87,7 @@ class Card37 extends Card
             {
                 $ret["selectable"][] = 'materia_'.$id;
             }
-            
         }
-
-        
-
 
          
         return $ret;
