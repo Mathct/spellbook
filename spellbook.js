@@ -824,7 +824,7 @@ addFamilier: function( player, no)
 
 addMateria: function(id, color, rune, location, emplacement)  
 {
-    if (emplacement != 0)
+    if ((emplacement != 0)&&(emplacement <= 14))
     {
     dojo.place( this.format_block( 'jstpl_materia', {
         x: (rune-1)*(-100),
