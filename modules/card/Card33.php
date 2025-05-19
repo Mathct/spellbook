@@ -279,6 +279,7 @@ class Card33 extends Card
                 );
 
 
+            spellbook::$instance->CalculPv();
             spellbook::$instance->addPending($this->player_id, "Autel"); 
         //}
 
