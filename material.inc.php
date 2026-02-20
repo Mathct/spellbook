@@ -20,18 +20,6 @@
  */
 
 
-/*
-
-Example:
-
-$this->card_types = array(
-    1 => array( "card_name" => ...,
-                ...
-              )
-);
-
-*/
-
 $this->listecards = [
   '11' => [
     'name' => clienttranslate("SACRIFICE"),

@@ -33,7 +33,7 @@ class Card37 extends Card
 
     public function Power5($parg1, $parg2, $varg1, $varg2)
     {
-        self::DbQuery( "UPDATE player set p37 = 1 WHERE player_id = {$this->player_id}" );
+        self::DbQuery( "UPDATE `player` set `p37` = 1 WHERE `player_id` = {$this->player_id}" );
         spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains the permanent power “COMMUNION” Level 5' ), array(
             'player_name' => $this->player_name,
                             
@@ -54,13 +54,13 @@ class Card37 extends Card
         
 
         $familier = 'materiafamilier_'.$this->player_id;
-        $nombrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$familier}'", true ));
-        $nombreautel = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true ));
+        $nombrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$familier}'", true ));
+        $nombreautel = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true ));
 
         if (($nombreautel>=3)&&($nombrefamilier<=11))
         {
-            $ret['titleyou'] = clienttranslate('${you} must select 3 Materia from the Altar to store');
-            $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+            $ret['titleyou'] = clienttranslate('${you} must select 3 `Materia` from the Altar to store');
+            $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
             foreach($ids as $id)
             {
                 $ret["selectablemulti"][] = 'materia_'.$id;
@@ -70,8 +70,8 @@ class Card37 extends Card
 
         if ((($nombreautel==2)&&($nombrefamilier<=12))||(($nombreautel>=2)&&($nombrefamilier==12)))
         {
-            $ret['titleyou'] = clienttranslate('${you} must select 2 Materia from the Altar to store');
-            $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+            $ret['titleyou'] = clienttranslate('${you} must select 2 `Materia` from the Altar to store');
+            $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
             foreach($ids as $id)
             {
                 $ret["selectablemulti"][] = 'materia_'.$id;
@@ -81,8 +81,8 @@ class Card37 extends Card
 
         if ((($nombreautel==1)&&($nombrefamilier<=13))||(($nombreautel>=1)&&($nombrefamilier==13)))
         {
-            $ret['titleyou'] = clienttranslate('${you} must select 1 Materia from the Altar to store');
-            $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+            $ret['titleyou'] = clienttranslate('${you} must select 1 `Materia` from the Altar to store');
+            $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -104,7 +104,7 @@ class Card37 extends Card
             $explode = explode("_", $varg1);
             $id = intval($explode[1]);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             
                 $nouvelemplacementfamilier = $countfamilier +1;
                 spellbook::$instance->materia->moveCard( $id, $familier, $nouvelemplacementfamilier);
@@ -117,8 +117,8 @@ class Card37 extends Card
 
             $log = array();
             $idmateria = $id;
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
             
                 spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "COMMUNION" and store ${log1} from the Altar'), array(
@@ -183,7 +183,7 @@ class Card37 extends Card
             $explode = explode("_", $parg1);
             $count = count($explode);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= $count; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -196,8 +196,8 @@ class Card37 extends Card
                     );
 
                     $idmateria = intval($explode[$i-1]);
-                    $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-                    $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+                    $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+                    $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
                     $log[] = ($col*10)+$signe;
             }
 

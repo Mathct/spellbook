@@ -17,19 +17,19 @@ class Clonecard14 extends Card
 
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
-        $nombrerouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true ));
-        $nombreviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true ));
-        $nombrevert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true ));
-        $nombrenoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true ));
-        $nombreblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true ));
-        $nombrebleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true ));
-        $nombrejaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true ));
+        $nombrerouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true ));
+        $nombreviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true ));
+        $nombrevert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true ));
+        $nombrenoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true ));
+        $nombreblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true ));
+        $nombrebleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true ));
+        $nombrejaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true ));
         
         $player = spellbook::$instance->getGameStateValue('idclone');
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0")); //////ATTENTION set_color
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0")); //////ATTENTION set_color
 
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {    
@@ -135,20 +135,20 @@ class Clonecard14 extends Card
 
         $reserve = 'materiareserve_'.$this->player_id;
         
-        $nombrerouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true ));
-        $rouge = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true );
-        $nombreviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true ));
-        $violet = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true );
-        $nombrevert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true ));
-        $vert = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true );
-        $nombrenoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true ));
-        $noir = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true );
-        $nombreblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true ));
-        $blanc = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true );
-        $nombrebleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true ));
-        $bleu = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true );
-        $nombrejaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true ));
-        $jaune = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true );
+        $nombrerouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true ));
+        $rouge = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true );
+        $nombreviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true ));
+        $violet = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true );
+        $nombrevert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true ));
+        $vert = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true );
+        $nombrenoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true ));
+        $noir = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true );
+        $nombreblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true ));
+        $blanc = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true );
+        $nombrebleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true ));
+        $bleu = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true );
+        $nombrejaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true ));
+        $jaune = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true );
         
             
                 
@@ -357,12 +357,12 @@ class Clonecard14 extends Card
         $ret["selected3"][] = $parg2;
         $explode = explode("_", $parg2);
         $firstid = intval($explode[1]);
-        $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id = {$firstid}");
+        $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id` = {$firstid}");
 
         
         $reserve = 'materiareserve_'.$this->player_id;
 
-        $materia = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = '{$color}' AND card_id != {$firstid}", true );
+        $materia = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = '{$color}' AND `card_id` != {$firstid}", true );
         foreach ($materia as $id)   
         {
             $ret["selectablestore"][] = 'materia_'.$id;
@@ -438,7 +438,7 @@ class Clonecard14 extends Card
         if($varg1 == "confirm")
         {*/
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             $explode = explode("_", $parg1);
             $nombremateria = count($explode);
 
@@ -460,12 +460,12 @@ class Clonecard14 extends Card
             if ($nombremateria == 2)
             {
                 $id1 = intval($explode[0]);
-                $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id1}"));
-                $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id1}"));
+                $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id1}"));
+                $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id1}"));
                 $log1 = ($col1*10)+$signe1;
                 $id2 = intval($explode[1]);
-                $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id2}"));
-                $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id2}"));
+                $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id2}"));
+                $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id2}"));
                 $log2 = ($col2*10)+$signe2;
 
                 spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "OFFERING" (Clone) and stores ${log1} ${log2}'), array(
@@ -480,16 +480,16 @@ class Clonecard14 extends Card
             if ($nombremateria == 3)
             {
                 $id1 = intval($explode[0]);
-                $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id1}"));
-                $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id1}"));
+                $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id1}"));
+                $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id1}"));
                 $log1 = ($col1*10)+$signe1;
                 $id2 = intval($explode[1]);
-                $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id2}"));
-                $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id2}"));
+                $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id2}"));
+                $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id2}"));
                 $log2 = ($col2*10)+$signe2;
                 $id3 = intval($explode[2]);
-                $col3= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id3}"));
-                $signe3= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id3}"));
+                $col3= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id3}"));
+                $signe3= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id3}"));
                 $log3 = ($col3*10)+$signe3;
 
                 spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "OFFERING" (Clone) and stores ${log1} ${log2} ${log3}'), array(
@@ -506,20 +506,20 @@ class Clonecard14 extends Card
             if ($nombremateria == 4)
             {
                 $id1 = intval($explode[0]);
-                $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id1}"));
-                $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id1}"));
+                $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id1}"));
+                $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id1}"));
                 $log1 = ($col1*10)+$signe1;
                 $id2 = intval($explode[1]);
-                $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id2}"));
-                $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id2}"));
+                $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id2}"));
+                $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id2}"));
                 $log2 = ($col2*10)+$signe2;
                 $id3 = intval($explode[2]);
-                $col3= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id3}"));
-                $signe3= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id3}"));
+                $col3= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id3}"));
+                $signe3= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id3}"));
                 $log3 = ($col3*10)+$signe3;
                 $id4 = intval($explode[3]);
-                $col4= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$id4}"));
-                $signe4= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$id4}"));
+                $col4= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$id4}"));
+                $signe4= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$id4}"));
                 $log4 = ($col4*10)+$signe4;
 
                 spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "OFFERING" (Clone) and stores ${log1} ${log2} ${log3} ${log4}'), array(

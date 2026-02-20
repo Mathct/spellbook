@@ -17,29 +17,29 @@ class Clonecard34 extends Card
         $card = intval($explode[1]);
         $joueur = intval($explode[2]);
 
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0")); //////ATTENTION set_color
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0")); //////ATTENTION set_color
 
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
-        $countautel = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+        $countautel = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true ));
 
-        $rougef = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 1", true ));
-        $violetf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 2", true ));
-        $vertf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 3", true ));
-        $noirf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 4", true ));
-        $blancf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 5", true ));
-        $bleuf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 6", true ));
-        $jaunef = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 7", true ));
+        $rougef = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 1", true ));
+        $violetf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 2", true ));
+        $vertf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 3", true ));
+        $noirf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 4", true ));
+        $blancf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 5", true ));
+        $bleuf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 6", true ));
+        $jaunef = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 7", true ));
 
-        $rougea = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 1", true ));
-        $violeta = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 2", true ));
-        $verta = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 3", true ));
-        $noira = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 4", true ));
-        $blanca = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 5", true ));
-        $bleua = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 6", true ));
-        $jaunea = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 7", true ));
+        $rougea = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 1", true ));
+        $violeta = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 2", true ));
+        $verta = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 3", true ));
+        $noira = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 4", true ));
+        $blanca = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 5", true ));
+        $bleua = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 6", true ));
+        $jaunea = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 7", true ));
 
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
@@ -140,30 +140,30 @@ class Clonecard34 extends Card
 
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
-        $countautel = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+        $countautel = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true ));
 
-        $rougef = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 1", true ));
-        $violetf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 2", true ));
-        $vertf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 3", true ));
-        $noirf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 4", true ));
-        $blancf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 5", true ));
-        $bleuf = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 6", true ));
-        $jaunef = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 7", true ));
+        $rougef = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 1", true ));
+        $violetf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 2", true ));
+        $vertf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 3", true ));
+        $noirf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 4", true ));
+        $blancf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 5", true ));
+        $bleuf = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 6", true ));
+        $jaunef = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 7", true ));
 
-        $rougea = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 1", true ));
-        $violeta = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 2", true ));
-        $verta = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 3", true ));
-        $noira = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 4", true ));
-        $blanca = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 5", true ));
-        $bleua = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 6", true ));
-        $jaunea = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 7", true ));
+        $rougea = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 1", true ));
+        $violeta = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 2", true ));
+        $verta = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 3", true ));
+        $noira = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 4", true ));
+        $blanca = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 5", true ));
+        $bleua = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 6", true ));
+        $jaunea = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 7", true ));
         
         
         if(($rougef >=1)&&($rougea>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 1", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 1", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -171,7 +171,7 @@ class Clonecard34 extends Card
         }
         if(($violetf >=1)&&($violeta>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 2", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 2", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -179,7 +179,7 @@ class Clonecard34 extends Card
         }
         if(($vertf >=1)&&($verta>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 3", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 3", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -187,7 +187,7 @@ class Clonecard34 extends Card
         }
         if(($noirf >=1)&&($noira>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 4", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 4", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -195,7 +195,7 @@ class Clonecard34 extends Card
         }
         if(($blancf >=1)&&($blanca>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 5", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 5", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -203,7 +203,7 @@ class Clonecard34 extends Card
         }
         if(($bleuf >=1)&&($bleua>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 6", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 6", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -211,7 +211,7 @@ class Clonecard34 extends Card
         }
         if(($jaunef >=1)&&($jaunea>=1))
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel' AND card_type = 7", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type` = 7", true );
             foreach($ids as $id)
             {
                 $ret["selectable"][] = 'materia_'.$id;
@@ -266,7 +266,7 @@ class Clonecard34 extends Card
         {*/
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$this->player_id;
-            $emplacementmateria = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $emplacementmateria = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacementmateria);
 
             $explode = explode("_", $parg1);
@@ -285,8 +285,8 @@ class Clonecard34 extends Card
                 );
 
                 $log = array();
-                $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-                $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+                $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+                $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
                 $log[] = ($col*10)+$signe;
 
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "FEAST" (Clone) and takes ${log1}'), array(
@@ -317,7 +317,7 @@ class Clonecard34 extends Card
         $ret["selected"][] = 'materiacard_4_'.spellbook::$instance->getGameStateValue('idclone').'_2';
         
 
-        $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true );
 
         foreach($ids as $id)
         {
@@ -374,7 +374,7 @@ class Clonecard34 extends Card
             $idmateria = intval($explode[1]);
 
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             $nouvelemplacementfamilier = $countfamilier +1;
 
             spellbook::$instance->materia->moveCard( $idmateria, $familier, $nouvelemplacementfamilier);
@@ -388,8 +388,8 @@ class Clonecard34 extends Card
                 );
 
                 $log = array();
-                $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-                $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+                $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+                $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
                 $log[] = ($col*10)+$signe;
 
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "FEAST" (Clone) and stores ${log1} from the Altar'), array(

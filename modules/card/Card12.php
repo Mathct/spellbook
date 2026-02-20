@@ -18,14 +18,14 @@ class Card12 extends Card
         
 
         
-        $nombretriangle = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 1", true ));
-        $nombrecarre = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 2", true ));
-        $nombrerond = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 3", true ));
+        $nombretriangle = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 1", true ));
+        $nombrecarre = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 2", true ));
+        $nombrerond = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 3", true ));
 
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$this->player_id} AND set_color = 2 AND typerune !=0")); //////ATTENTION set_color
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 2 AND `typerune` !=0")); //////ATTENTION set_color
 
         $location = 'materiareserve_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true ));
 
         if($countreserve <8)
         {
@@ -154,7 +154,7 @@ class Card12 extends Card
         if ($parg2 == "3")
         {
             $ret["selected"][] = 'materiacard_2_'.$this->player_id.'_1';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 3", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 3", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable2M"][] = "materia_".$idmateria;
@@ -164,7 +164,7 @@ class Card12 extends Card
         if ($parg2 == "4")
         {
             $ret["selected"][] = 'materiacard_2_'.$this->player_id.'_2';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 1", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 1", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable2M"][] = "materia_".$idmateria;
@@ -174,7 +174,7 @@ class Card12 extends Card
         if ($parg2 == "5")
         {
             $ret["selected"][] = 'materiacard_2_'.$this->player_id.'_3';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = 2", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = 2", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable2M"][] = "materia_".$idmateria;
@@ -243,7 +243,7 @@ class Card12 extends Card
 
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$this->player_id;
-            $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacement);
             $emplacementlibre = array_slice($diff, 0, 2);
             $premier = $emplacementlibre[0];
@@ -268,11 +268,11 @@ class Card12 extends Card
     
             spellbook::$instance->AutelReorganisation();
 
-            $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateriarecup1}"));
-            $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateriarecup1}"));
+            $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateriarecup1}"));
+            $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateriarecup1}"));
             $log1 = ($col1*10)+$signe1;
-            $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateriarecup2}"));
-            $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateriarecup2}"));
+            $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateriarecup2}"));
+            $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateriarecup2}"));
             $log2 = ($col2*10)+$signe2;
 
 

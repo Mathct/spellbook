@@ -16,8 +16,11 @@
   *
   */
 
+use Bga\GameFramework\Components\Deck;
+use Bga\GameFramework\Table;
+use Bga\GameFramework\UserException;
+use Bga\GameFramework\VisibleSystemException;
 
-require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include('modules/Pending.php');
 include('modules/Card.php');
 
@@ -25,6 +28,11 @@ include('modules/Card.php');
 class spellbook extends Table
 {
     public static $instance = null;
+
+    public Deck $materia;
+   
+    public array $listecards;
+    public array $listeaide;
 
 	function __construct( )
 	{
@@ -54,17 +62,10 @@ class spellbook extends Table
         
         self::$instance = $this;
 
-        $this->materia = self::getNew( "module.common.deck" );
-        $this->materia->init( "materia" );
+        $this->materia = $this->bga->deckFactory->createDeck( "materia" );
         $this->materia->autoreshuffle = true;
 
 	}
-	
-    protected function getGameName( )
-    {
-		// Used for translations and stuff. Please do not modify.
-        return "spellbook";
-    }	
 
     /*
         setupNewGame:
@@ -83,7 +84,7 @@ class spellbook extends Table
  
         // Create players
         // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
-        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
+        $sql = "INSERT INTO `player` (`player_id`, `player_color`, `player_canal`, `player_name`, `player_avatar`) VALUES ";
         $values = array();
         foreach( $players as $player_id => $player )
         {
@@ -108,7 +109,7 @@ class spellbook extends Table
         self::initStat( 'player', 'score_spell', 0 ); 
         self::initStat( 'player', 'score_familiar', 0 );
 
-        $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+        $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
         if($nbreplayers == 1)
         {
@@ -153,7 +154,7 @@ class spellbook extends Table
         }
 
 
-        $gamemode = $this->gamestate->table_globals[100];
+        $gamemode = $this->bga->tableOptions->get(100);
         if ($gamemode == 2)
         {
             $set = 1;
@@ -172,7 +173,7 @@ class spellbook extends Table
                         $jour = intval($jourset_1[$indexjour]);
                         $type = $type_1[$p-3][$k-1];
                         $vp = $vp_1[$p-3][$k-1];
-                        self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
+                        self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
                     }
 
                 }
@@ -198,7 +199,7 @@ class spellbook extends Table
                         $jour = intval($jourset_1[$indexjour]);
                         $type = $type_1[$p-3][$k-1];
                         $vp = $vp_1[$p-3][$k-1];
-                        self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
+                        self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
                     }
 
                 }
@@ -225,7 +226,7 @@ class spellbook extends Table
                     $jour = intval($jourset_1[$indexjour]);
                     $type = $type_1[$p-3][$k-1];
                     $vp = $vp_1[$p-3][$k-1];
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES ({$set}, {$k}, {$player_id}, {$jour}, {$p}, {$type}, {$vp})" );
                 }
 
             }
@@ -241,9 +242,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 1, {$player_id}, 1, 3, 0, 1)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 1, {$player_id}, 1, 4, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 1, {$player_id}, 1, 5, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 1, {$player_id}, 1, 3, 0, 1)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 1, {$player_id}, 1, 4, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 1, {$player_id}, 1, 5, 0, 3)" );
 
                 }
 
@@ -252,9 +253,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 1, {$player_id}, 1, 3, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 1, {$player_id}, 1, 4, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 1, {$player_id}, 1, 5, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 1, {$player_id}, 1, 3, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 1, {$player_id}, 1, 4, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 1, {$player_id}, 1, 5, 0, 4)" );
 
                 }
                 
@@ -263,9 +264,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 1, {$player_id}, 1, 3, 0, 0)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 1, {$player_id}, 1, 4, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 1, {$player_id}, 1, 5, 0, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 1, {$player_id}, 1, 3, 0, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 1, {$player_id}, 1, 4, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 1, {$player_id}, 1, 5, 0, 5)" );
 
                 }
                 
@@ -276,9 +277,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 2, {$player_id}, 1, 3, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 2, {$player_id}, 1, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 2, {$player_id}, 1, 5, 0, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 2, {$player_id}, 1, 3, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 2, {$player_id}, 1, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 2, {$player_id}, 1, 5, 0, 5)" );
 
                 }
 
@@ -287,9 +288,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 2, {$player_id}, 1, 3, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 2, {$player_id}, 1, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 2, {$player_id}, 1, 5, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 2, {$player_id}, 1, 3, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 2, {$player_id}, 1, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 2, {$player_id}, 1, 5, 0, 4)" );
 
                 }
                 
@@ -298,9 +299,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 2, {$player_id}, 1, 3, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 2, {$player_id}, 1, 4, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 2, {$player_id}, 1, 5, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 2, {$player_id}, 1, 3, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 2, {$player_id}, 1, 4, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 2, {$player_id}, 1, 5, 0, 4)" );
 
                 }
                 
@@ -311,9 +312,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 3, {$player_id}, 2, 3, 0, 1)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 3, {$player_id}, 2, 4, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 3, {$player_id}, 2, 5, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 3, {$player_id}, 2, 3, 0, 1)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 3, {$player_id}, 2, 4, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 3, {$player_id}, 2, 5, 0, 3)" );
 
                 }
 
@@ -322,9 +323,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 3, {$player_id}, 2, 3, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 3, {$player_id}, 2, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 3, {$player_id}, 2, 5, 0, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 3, {$player_id}, 2, 3, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 3, {$player_id}, 2, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 3, {$player_id}, 2, 5, 0, 5)" );
 
                 }
                 
@@ -333,9 +334,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 3, {$player_id}, 3, 3, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 3, {$player_id}, 3, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 3, {$player_id}, 3, 5, 0, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 3, {$player_id}, 3, 3, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 3, {$player_id}, 3, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 3, {$player_id}, 3, 5, 0, 6)" );
 
                 }
                 
@@ -346,9 +347,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 4, {$player_id}, 2, 3, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 4, {$player_id}, 2, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 4, {$player_id}, 2, 5, 0, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 4, {$player_id}, 2, 3, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 4, {$player_id}, 2, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 4, {$player_id}, 2, 5, 0, 6)" );
 
                 }
 
@@ -357,9 +358,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 4, {$player_id}, 3, 3, 0, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 4, {$player_id}, 3, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 4, {$player_id}, 3, 5, 0, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 4, {$player_id}, 3, 3, 0, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 4, {$player_id}, 3, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 4, {$player_id}, 3, 5, 0, 5)" );
 
                 }
                 
@@ -368,9 +369,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 4, {$player_id}, 2, 3, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 4, {$player_id}, 2, 4, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 4, {$player_id}, 2, 5, 4, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 4, {$player_id}, 2, 3, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 4, {$player_id}, 2, 4, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 4, {$player_id}, 2, 5, 4, 0)" );
 
                 }
                 
@@ -381,9 +382,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 5, {$player_id}, 3, 3, 0, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 5, {$player_id}, 3, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 5, {$player_id}, 3, 5, 0, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 5, {$player_id}, 3, 3, 0, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 5, {$player_id}, 3, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 5, {$player_id}, 3, 5, 0, 6)" );
 
                 }
 
@@ -392,9 +393,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 5, {$player_id}, 3, 3, 3, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 5, {$player_id}, 3, 4, 0, 6)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 5, {$player_id}, 3, 5, 0, 8)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 5, {$player_id}, 3, 3, 3, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 5, {$player_id}, 3, 4, 0, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 5, {$player_id}, 3, 5, 0, 8)" );
 
                 }
                 
@@ -403,9 +404,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 5, {$player_id}, 2, 3, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 5, {$player_id}, 2, 4, 0, 5)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 5, {$player_id}, 2, 5, 0, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 5, {$player_id}, 2, 3, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 5, {$player_id}, 2, 4, 0, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 5, {$player_id}, 2, 5, 0, 6)" );
 
                 }
                 
@@ -416,9 +417,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 6, {$player_id}, 3, 3, 3, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 6, {$player_id}, 3, 4, 0, 4)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 6, {$player_id}, 3, 5, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 6, {$player_id}, 3, 3, 3, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 6, {$player_id}, 3, 4, 0, 4)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 6, {$player_id}, 3, 5, 0, 4)" );
 
                 }
 
@@ -427,9 +428,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 6, {$player_id}, 0, 3, 1, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 6, {$player_id}, 0, 4, 1, 6)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 6, {$player_id}, 0, 5, 2, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 6, {$player_id}, 0, 3, 1, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 6, {$player_id}, 0, 4, 1, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 6, {$player_id}, 0, 5, 2, 0)" );
 
                 }
                 
@@ -438,9 +439,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 6, {$player_id}, 0, 3, 2, 2)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 6, {$player_id}, 0, 4, 2, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 6, {$player_id}, 0, 5, 2, 6)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 6, {$player_id}, 0, 3, 2, 2)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 6, {$player_id}, 0, 4, 2, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 6, {$player_id}, 0, 5, 2, 6)" );
 
                 }
                 
@@ -451,9 +452,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 7, {$player_id}, 0, 3, 1, 3)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 7, {$player_id}, 0, 4, 1, 5)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (1, 7, {$player_id}, 0, 5, 1, 7)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 7, {$player_id}, 0, 3, 1, 3)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 7, {$player_id}, 0, 4, 1, 5)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (1, 7, {$player_id}, 0, 5, 1, 7)" );
 
                 }
 
@@ -462,9 +463,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 7, {$player_id}, 0, 3, 4, 0)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 7, {$player_id}, 0, 4, 4, 0)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (2, 7, {$player_id}, 0, 5, 4, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 7, {$player_id}, 0, 3, 4, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 7, {$player_id}, 0, 4, 4, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (2, 7, {$player_id}, 0, 5, 4, 0)" );
 
                 }
                 
@@ -473,9 +474,9 @@ class spellbook extends Table
             {
                 foreach( $players as $player_id => $player )
                 {
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 7, {$player_id}, 0, 3, 1, 0)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 7, {$player_id}, 0, 4, 4, 0)" );
-                    self::DbQuery( "INSERT INTO cards (set_id, set_color, player_id, jour, power, type, vp) VALUES (3, 7, {$player_id}, 0, 5, 2, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 7, {$player_id}, 0, 3, 1, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 7, {$player_id}, 0, 4, 4, 0)" );
+                    self::DbQuery( "INSERT INTO `cards` (`set_id`, `set_color`, `player_id`, `jour`, `power`, `type`, `vp`) VALUES (3, 7, {$player_id}, 0, 5, 2, 0)" );
 
                 }
                 
@@ -495,7 +496,7 @@ class spellbook extends Table
 
 
 
-        /************ Init Pending *****/
+        /************ Init `Pending` *****/
         if($nbreplayers != 1)
         {
         foreach( $players as $player_id => $player )
@@ -517,6 +518,7 @@ class spellbook extends Table
 
 
         /************ End of the game initialization *****/
+        return 2;
     }
 
    
@@ -536,39 +538,37 @@ class spellbook extends Table
     {
         $result = array();
     
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
-    
         // Get information about players
-        // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score, player_no pos FROM player ";
+        // Note: you can retrieve some extra field you added for "`player`" table in "dbmodel.sql" if you need it.
+        $sql = "SELECT `player_id` `id`, `player_score` score, `player_no` pos FROM `player` ";
         $result['players'] = self::getCollectionFromDb( $sql );
   
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
         $result['nbreplayers'] = count ($result['players']);
 
-        $result['cards'] = self::getObjectListFromDB( "SELECT set_id id, set_color color, player_id player FROM cards WHERE power = 3" );
-        $result['familier'] = self::getObjectListFromDB( "SELECT player_no no, player_id player FROM player");
-        $result['materia'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM materia WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['cards'] = self::getObjectListFromDB( "SELECT `set_id` `id`, `set_color` color, `player_id` `player` FROM `cards` WHERE `power` = 3" );
+        $result['familier'] = self::getObjectListFromDB( "SELECT `player_no` no, `player_id` `player` FROM `player`");
+        $result['materia'] = self::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` `type`, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg FROM `materia` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
         
-        $result['firstplayer'][] = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+        $result['firstplayer'][] = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=1");
 
         $result['listecards'] = $this->listecards;
         $result['listeaide'] = $this->listeaide;
 
-        $result['final'][] = count(self::getObjectListFromDB( "SELECT player_id FROM player WHERE final = 1", true ));
+        $result['final'][] = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player` WHERE `final` = 1", true ));
 
-        $listplayers = self::getObjectListFromDB("SELECT player_id id FROM player", true);
+        $listplayers = self::getObjectListFromDB("SELECT `player_id` `id` FROM `player`", true);
         foreach($listplayers as $player)
         {
             $familier = 'materiafamilier_'.$player;
-            $result['nbrefamilier'][$player] = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
-            $result['nbrespell'][$player] = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$player} AND typerune != 0", true ));
+            $result['nbrefamilier'][$player] = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+            $result['nbrespell'][$player] = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$player} AND `typerune` != 0", true ));
 
         }
         
-        $nbreopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaopponent'", true ));
-        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent'", true ));
+        $nbreopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaopponent'", true ));
+        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent'", true ));
         if (($nbreopponent>=0)&&($nbreopponent<=3))
         {
             $scoreopponent = $nbrereserveopponent;
@@ -599,14 +599,14 @@ class spellbook extends Table
     {
         // TODO: compute and return the game progression
 
-        $listplayers = self::getObjectListFromDB("SELECT player_id id FROM player", true);
+        $listplayers = self::getObjectListFromDB("SELECT `player_id` `id` FROM `player`", true);
         $tableaufamiliar = array();
         $tableauspell = array();
         foreach($listplayers as $player)
         {
             $familier = 'materiafamilier_'.$player;
-            $nbrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
-            $nbrespell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$player} AND typerune != 0", true ));
+            $nbrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+            $nbrespell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$player} AND `typerune` != 0", true ));
             $tableaufamiliar[]=$nbrefamilier;
             $tableauspell[]=$nbrespell;
         }
@@ -643,18 +643,18 @@ class spellbook extends Table
 /////////////////////////////////////////////////////////////////////////////////  
 
 function addPending($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $sql = "INSERT INTO pending (player_id, function, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+    $sql = "INSERT INTO `pending` (`player_id`, `function`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
     self::DbQuery( $sql );
 }
 
 function addPendingTarget($player_id, $function, $target, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $sql = "INSERT INTO pending (player_id, function, target, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+    $sql = "INSERT INTO `pending` (`player_id`, `function`, `target`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
     self::DbQuery( $sql );
 }
 
 function addPendingFirst($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $minid = self::getUniqueValueFromDB( "select min(id) from pending")-1;
-    $sql = "INSERT INTO pending (id, player_id, function, arg, arg2) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
+    $minid = self::getUniqueValueFromDB( "select min(`id`) from `pending`")-1;
+    $sql = "INSERT INTO `pending` (`id`, `player_id`, `function`, `arg`, `arg2`) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
     self::DbQuery( $sql );
 }
 
@@ -664,7 +664,7 @@ function checkArgs($arg1)
 
         if(!in_array($arg1,$ret['selectable']) && !in_array($arg1,$ret['buttons']))
         {
-            throw new feException( "Not a valid selection");
+            throw new UserException( "Not a valid selection");
         }
         
     }
@@ -683,7 +683,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
             $player_id = $nextPlayer[0];
         }
         else {
-            // Normal mode: current player est premier de la liste puis les autres dans l ordre de la base de données player
+            // Normal mode: current `player` est premier de la liste puis les autres dans l ordre de la base de données `player`
             $player_id = $current_player;
         }
         $result[] = $player_id;
@@ -699,7 +699,7 @@ function AutelReorganisation()
 
 {
 
-$list = self::getObjectListFromDB( "SELECT card_id id, card_location_arg location FROM materia WHERE card_location = 'materiaautel' ORDER BY card_location_arg ASC" );
+$list = self::getObjectListFromDB( "SELECT `card_id` `id`, `card_location_arg` location FROM `materia` WHERE `card_location` = 'materiaautel' ORDER BY `card_location_arg` ASC" );
 $nbre = count($list);
     if($nbre >=1 )
     {
@@ -725,62 +725,62 @@ $nbre = count($list);
 function CalculPv()
 
 {
-    self::DbQuery( "UPDATE player set player_score = 0" ); // remise à zero des scores
-    $players = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+    self::DbQuery( "UPDATE `player` set `player_score` = 0" ); // remise à zero des scores
+    $players = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
     //$activeplayer_id = $this->getActivePlayerId();
 
     
 
 
-    // Calcul poour chaque player
+    // Calcul poour chaque `player`
     
     foreach ($players as $playerid)
     {
-        /// VP card27 
+        /// `VP` card27 
     
-    $lvl = self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =7 AND set_id =2");
+    $lvl = self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =7 AND `set_id` =2");
 
     if ($lvl != NULL)
     {
-       $nbreotherspell = count(self::getObjectListFromDB( "SELECT set_id FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color != 7", true ));
-       $nbreotherspell45 = count(self::getObjectListFromDB( "SELECT set_id FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color != 7 AND power != 3", true ));
-       $nbreotherspell3 = count(self::getObjectListFromDB( "SELECT set_id FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color != 7 AND power = 3", true ));
+       $nbreotherspell = count(self::getObjectListFromDB( "SELECT `set_id` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` != 7", true ));
+       $nbreotherspell45 = count(self::getObjectListFromDB( "SELECT `set_id` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` != 7 AND `power` != 3", true ));
+       $nbreotherspell3 = count(self::getObjectListFromDB( "SELECT `set_id` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` != 7 AND `power` = 3", true ));
     }
 
     if ($lvl == 3)
     {
         
         $score = $nbreotherspell;
-        self::DbQuery( "UPDATE player set player_score = player_score + {$score} WHERE player_id = {$playerid}" );
+        self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$score} WHERE `player_id` = {$playerid}" );
     }
 
     if ($lvl == 4)
     {
         $score = ($nbreotherspell45*2)+$nbreotherspell3;
-        self::DbQuery( "UPDATE player set player_score = player_score + {$score} WHERE player_id = {$playerid}" );
+        self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$score} WHERE `player_id` = {$playerid}" );
     }
 
     if ($lvl == 5)
     {
         $score = $nbreotherspell*2;
-        self::DbQuery( "UPDATE player set player_score = player_score + {$score} WHERE player_id = {$playerid}" );
+        self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$score} WHERE `player_id` = {$playerid}" );
     }
 
-    /// VP card34 
+    /// `VP` card34 
 
-    $lvl34 = self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =4 AND set_id =3");
+    $lvl34 = self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =4 AND `set_id` =3");
 
     if ($lvl34 == 5)
     {
         $familier = 'materiafamilier_'.$playerid;
 
-        $rouge = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 1", true ));
-        $violet = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 2", true ));
-        $vert = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 3", true ));
-        $noir = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 4", true ));
-        $blanc = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 5", true ));
-        $bleu = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 6", true ));
-        $jaune = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type = 7", true ));
+        $rouge = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 1", true ));
+        $violet = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 2", true ));
+        $vert = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 3", true ));
+        $noir = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 4", true ));
+        $blanc = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 5", true ));
+        $bleu = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 6", true ));
+        $jaune = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type` = 7", true ));
 
         $compteur34 = 0;
 
@@ -813,105 +813,105 @@ function CalculPv()
             $compteur34 = $compteur34 +1;
         }
 
-        self::DbQuery( "UPDATE player set player_score = player_score + {$compteur34} WHERE player_id = {$playerid}" );
+        self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$compteur34} WHERE `player_id` = {$playerid}" );
     }
 
 
-    /// VP card37
+    /// `VP` card37
 
-    $lvl37 = self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =7 AND set_id =3");
+    $lvl37 = self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =7 AND `set_id` =3");
 
     if ($lvl37 == 4)
     {
         
-        $rune = self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =7 AND set_id =3");
+        $rune = self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =7 AND `set_id` =3");
         $familier = 'materiafamilier_'.$playerid;
 
-        $compteur37 = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = '{$familier}' AND card_type_arg = '{$rune}'", true ));
+        $compteur37 = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = '{$familier}' AND `card_type_arg` = '{$rune}'", true ));
         
 
-        self::DbQuery( "UPDATE player set player_score = player_score + {$compteur37} WHERE player_id = {$playerid}" );
+        self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$compteur37} WHERE `player_id` = {$playerid}" );
     }
 
         // calcul pour familier
 
         $familier = 'materiafamilier_'.$playerid;
-        $nbrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$familier}'", true ));
+        $nbrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$familier}'", true ));
         $vptotalfamilier = 0;
 
         if(($nbrefamilier >=1)&&($nbrefamilier <=5))
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$nbrefamilier} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$nbrefamilier} WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = $nbrefamilier;
         }
         if($nbrefamilier == 6)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + 7 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + 7 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = 7;
         }
         if(($nbrefamilier >=7)&&($nbrefamilier <=8))
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$nbrefamilier} +1 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$nbrefamilier} +1 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = $nbrefamilier +1;
         }
         if(($nbrefamilier >=9)&&($nbrefamilier <=11))
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$nbrefamilier} +2 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$nbrefamilier} +2 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = $nbrefamilier +2;
         }
         if($nbrefamilier == 12)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + 15 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + 15 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = 15;
         }
         if($nbrefamilier == 13)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + 16 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + 16 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = 16;
         }
         if($nbrefamilier == 14)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + 18 WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + 18 WHERE `player_id` = {$playerid}" );
             $vptotalfamilier = 18;
         }
 
         // calcul pour les sorts
 
         
-        $vp1 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =1");
+        $vp1 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =1");
         if ($vp1 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp1} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp1} WHERE `player_id` = {$playerid}" );
         }
-        $vp2 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =2");
+        $vp2 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =2");
         if ($vp2 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp2} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp2} WHERE `player_id` = {$playerid}" );
         }
-        $vp3 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =3");
+        $vp3 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =3");
         if ($vp3 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp3} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp3} WHERE `player_id` = {$playerid}" );
         }
-        $vp4 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =4");
+        $vp4 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =4");
         if ($vp4 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp4} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp4} WHERE `player_id` = {$playerid}" );
         }
-        $vp5 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =5");
+        $vp5 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =5");
         if ($vp5 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp5} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp5} WHERE `player_id` = {$playerid}" );
         }
-        $vp6 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =6");
+        $vp6 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =6");
         if ($vp6 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp6} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp6} WHERE `player_id` = {$playerid}" );
         }
-        $vp7 = self::getUniqueValueFromDB("SELECT vp FROM cards WHERE player_id={$playerid} AND typerune !=0 AND set_color =7");
+        $vp7 = self::getUniqueValueFromDB("SELECT `vp` FROM `cards` WHERE `player_id`={$playerid} AND `typerune` !=0 AND `set_color` =7");
         if ($vp7 != NULL)
         {
-            self::DbQuery( "UPDATE player set player_score = player_score + {$vp7} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = `player_score` + {$vp7} WHERE `player_id` = {$playerid}" );
         }
         
 
@@ -922,9 +922,9 @@ function CalculPv()
 
 
         
-        // mise à jour du score
-        $score = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$playerid}");
-        //mise a jour du score du joueur
+        // mise à `jour` du score
+        $score = self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$playerid}");
+        //mise a `jour` du score du joueur
         spellbook::$instance->notifyAllPlayers('score','', array(
             'player' =>  $playerid,
             'score' => $score,
@@ -939,8 +939,8 @@ function CalculPv()
 
 
         $familier = 'materiafamilier_'.$playerid;
-        $nbrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
-        $nbrespell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$playerid} AND typerune != 0", true )); 
+        $nbrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+        $nbrespell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$playerid} AND `typerune` != 0", true )); 
 
         spellbook::$instance->notifyAllPlayers('pannel','', array(
             'id' =>  $playerid,
@@ -955,8 +955,8 @@ function CalculPv()
 
     if (spellbook::$instance->getGameStateValue('solo')==1)
     {
-        $nbreopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaopponent'", true ));
-        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent'", true ));
+        $nbreopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaopponent'", true ));
+        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent'", true ));
         if (($nbreopponent>=0)&&($nbreopponent<=3))
         {
             $scoreopponent = $nbrereserveopponent;
@@ -987,23 +987,23 @@ function EndGame($player)
     $player_id = $player;
     
     
-    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
-    $final = count(self::getObjectListFromDB( "SELECT player_id FROM player WHERE final = 1", true ));
-    $numerojoueur = intval(self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player_id}"));
+    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
+    $final = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player` WHERE `final` = 1", true ));
+    $numerojoueur = intval(self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id`={$player_id}"));
 
     if(($final>=1)&&($numerojoueur == $nbrejoueurs))
     {
         spellbook::$instance->CalculPv();
 
         // tie breaker
-        $players = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+        $players = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
         foreach ($players as $playerid)
         {
-            $countspell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$playerid} AND typerune != 0", true ));
+            $countspell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$playerid} AND `typerune` != 0", true ));
             $reserve = 'materiareserve_'.$playerid;
-            $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
+            $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
             $scoreaux = ($countspell*10)+$countreserve;
-            self::DbQuery( "UPDATE player set player_score_aux = {$scoreaux} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set player_score_aux = {$scoreaux} WHERE `player_id` = {$playerid}" );
 
         }
 
@@ -1012,14 +1012,14 @@ function EndGame($player)
     }
 
     $familier = 'materiafamilier_'.$player_id;
-    $nbrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
-    $nbrespell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$player_id} AND typerune != 0", true ));
+    $nbrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+    $nbrespell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$player_id} AND `typerune` != 0", true ));
 
     
     if (($nbrefamilier == 14)||($nbrespell == 7))
     {
-        self::DbQuery( "UPDATE player set final = 1 WHERE player_id = {$player_id}" );
-        $final = count(self::getObjectListFromDB( "SELECT player_id FROM player WHERE final = 1", true ));
+        self::DbQuery( "UPDATE `player` set `final` = 1 WHERE `player_id` = {$player_id}" );
+        $final = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player` WHERE `final` = 1", true ));
         if($final == 1)
         {
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( 'The end of the game has just been triggered'), array());
@@ -1027,21 +1027,21 @@ function EndGame($player)
         }
     }
 
-    $final = count(self::getObjectListFromDB( "SELECT player_id FROM player WHERE final = 1", true ));
+    $final = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player` WHERE `final` = 1", true ));
     
     if(($final>=1)&&($numerojoueur == $nbrejoueurs))
     {
         spellbook::$instance->CalculPv();
 
         // tie breaker
-        $players = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+        $players = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
         foreach ($players as $playerid)
         {
-            $countspell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$playerid} AND typerune != 0", true ));
+            $countspell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$playerid} AND `typerune` != 0", true ));
             $reserve = 'materiareserve_'.$playerid;
-            $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
+            $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
             $scoreaux = ($countspell*10)+$countreserve;
-            self::DbQuery( "UPDATE player set player_score_aux = {$scoreaux} WHERE player_id = {$playerid}" );
+            self::DbQuery( "UPDATE `player` set player_score_aux = {$scoreaux} WHERE `player_id` = {$playerid}" );
             
 
         }
@@ -1054,15 +1054,15 @@ function EndGame($player)
     {
         $player_id = $this->getActivePlayerId();
         $familier = 'materiafamilier_'.$player_id;
-        $nbrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
-        $nbrespell = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id = {$player_id} AND typerune != 0", true ));
-        $nbreopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaopponent'", true ));
-        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent'", true ));
+        $nbrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+        $nbrespell = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` = {$player_id} AND `typerune` != 0", true ));
+        $nbreopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaopponent'", true ));
+        $nbrereserveopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent'", true ));
 
     if (($nbrefamilier == 14)||($nbrespell == 7)||($nbreopponent == 17))
     {
         spellbook::$instance->CalculPv();
-        $scoreplayer = intval(self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$player_id}"));
+        $scoreplayer = intval(self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$player_id}"));
         if (($nbreopponent>=0)&&($nbreopponent<=3))
         {
             $scoreopponent = $nbrereserveopponent;
@@ -1076,15 +1076,15 @@ function EndGame($player)
         $compar = $scoreplayer - $scoreopponent;
         if ($compar == 0)
         {
-            self::DbQuery( "UPDATE player set player_score = 0 WHERE player_id = {$player_id}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = 0 WHERE `player_id` = {$player_id}" );
         }
         if ($compar < 0)
         {
-            self::DbQuery( "UPDATE player set player_score = -1 WHERE player_id = {$player_id}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = -1 WHERE `player_id` = {$player_id}" );
         }
         if ($compar > 0)
         {
-            self::DbQuery( "UPDATE player set player_score = 1 WHERE player_id = {$player_id}" );
+            self::DbQuery( "UPDATE `player` set `player_score` = 1 WHERE `player_id` = {$player_id}" );
         }
 
 
@@ -1108,15 +1108,15 @@ function Permanent36($take)
     
 
     $player_id = $this->getActivePlayerId();
-    $draw = intval(self::getUniqueValueFromDB("SELECT p36 FROM player WHERE player_id = {$player_id}"));
+    $draw = intval(self::getUniqueValueFromDB("SELECT `p36` FROM `player` WHERE `player_id` = {$player_id}"));
 
     $reserve = 'materiareserve_'.$player_id;
-    $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
+    $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
     $libre = 9- $countreserve;
 
     if(($draw != 0)&&($libre !=0))
     {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id = {$player_id} AND set_color = 6 AND typerune != 0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id` = {$player_id} AND `set_color` = 6 AND `typerune` != 0"));
         $explode = explode("_", $take);
         $tableau = array_map('intval', $explode); //pour transformer les string du tableau en entier et recreer un nouveau tableau
 
@@ -1132,7 +1132,7 @@ function Permanent36($take)
         $compteur36 = 0;
         foreach($tableausanszero as $id)
         {
-            $runetake = intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id = {$id}"));
+            $runetake = intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id` = {$id}"));
             if($runetake == $rune)
             {
                 $compteur36 = $compteur36 +1;
@@ -1148,7 +1148,7 @@ function Permanent36($take)
         {
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$player_id;
-            $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacement);
 
             if($nbredraw<=$libre)
@@ -1159,9 +1159,9 @@ function Permanent36($take)
                     $premieremplacementlibre = $emplacementlibre[$i-1];
 
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premieremplacementlibre);
-                $idmateria = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $colormateria = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $runemateria = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
+                $idmateria = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $colormateria = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $runemateria = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria,
                     'color' => $colormateria,
@@ -1184,9 +1184,9 @@ function Permanent36($take)
                     $premieremplacementlibre = $emplacementlibre[$i-1];
 
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premieremplacementlibre);
-                $idmateria = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $colormateria = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $runemateria = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
+                $idmateria = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $colormateria = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $runemateria = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria,
                     'color' => $colormateria,
@@ -1202,7 +1202,7 @@ function Permanent36($take)
             }
             
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "MIRAGE"'), array(
-                'player_name' => self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player_id}"),
+                'player_name' => self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_id`={$player_id}"),
                                 
                 )
                 );
@@ -1286,9 +1286,9 @@ function actSelect($arg1)
     self::checkAction( 'actSelect' );
     self::checkArgs($arg1);        
       
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $this->callPending($pending, true, $arg1);
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     //$this->giveExtraTime(self::getActivePlayerId());
     $this->gamestate->nextState( 'next');
     
@@ -1300,9 +1300,9 @@ function actButton($arg1)
     self::checkAction( 'actSelect' );
     self::checkArgs($arg1);        
       
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $this->callPending($pending, true, $arg1);
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     //$this->giveExtraTime(self::getActivePlayerId());
     $this->gamestate->nextState( 'next');
     
@@ -1326,8 +1326,8 @@ function actValidateselectionsoir( $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $ar
     }
     $selection = $arg1.'_'.$arg2.'_'.$arg3.'_'.$arg4.'_'.$arg5.'_'.$arg6.'_'.$arg7.'_'.$arg8.'_'.$arg9;
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPending ($pending['player_id'], "SoirLearn4", $selection);
@@ -1359,8 +1359,8 @@ function actValidateselectionsoir2( $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $a
     }
     $selection = $arg1.'_'.$arg2.'_'.$arg3.'_'.$arg4.'_'.$arg5.'_'.$arg6.'_'.$arg7.'_'.$arg8.'_'.$arg9;
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card16", "Controle", $selection);
@@ -1380,8 +1380,8 @@ function actValidateselectioncard12( $arg1, $arg2)
     self::checkAction( 'actSelect' );
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card12", "Validation", $arg1, $arg2);
@@ -1415,8 +1415,8 @@ function actValidateswap2autel( $arg1, $arg2)
         
     spellbook::$instance->setGameStateValue('selectautel', 1);
 
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card13", "Swap2", $selection);
@@ -1449,8 +1449,8 @@ function actValidateswap2reserve( $arg1, $arg2, $arg3, $arg4)
     $selection2 = $arg3.'_'.$arg4;
         
   
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card13", "Swap2Confirm", $selection1, $selection2);
@@ -1483,8 +1483,8 @@ function actValidateswap3autel( $arg1, $arg2, $arg3)
         
     spellbook::$instance->setGameStateValue('selectautel', 1);
 
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card13", "Swap3", $selection);
@@ -1517,8 +1517,8 @@ function actValidateswap3reserve( $arg1, $arg2, $arg3, $arg4, $arg5, $arg6)
     $selection2 = $arg4.'_'.$arg5.'_'.$arg6;
         
   
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card13", "Swap3Confirm", $selection1, $selection2);
@@ -1550,8 +1550,8 @@ function actValidatestore2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card14", "Confirm", $selection);
@@ -1583,8 +1583,8 @@ function actValidatestore3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card14", "Confirm", $selection);
@@ -1616,8 +1616,8 @@ function actValidatestore4( $arg1, $arg2, $arg3, $arg4)
     $selection = $arg1.'_'.$arg2.'_'.$arg3.'_'.$arg4;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card14", "Confirm", $selection);
@@ -1649,8 +1649,8 @@ function actValidate22take2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card22", "Confirm2", $selection);
@@ -1683,8 +1683,8 @@ function actValidate22take3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card22", "Confirm2", $selection);
@@ -1716,8 +1716,8 @@ function actValidate23discard2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card23", "Confirm2", $selection);
@@ -1749,8 +1749,8 @@ function actValidate23discard3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card23", "Confirm3", $selection);
@@ -1782,8 +1782,8 @@ function actValidate24store2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card24", "Power4Store2Confirm", $selection);
@@ -1815,8 +1815,8 @@ function actValidate24take2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card24", "Power5Take2Confirm", $selection);
@@ -1848,8 +1848,8 @@ function actValidate24store3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card24", "Power5Store3Confirm", $selection);
@@ -1881,8 +1881,8 @@ function actValidate25selectautel( $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $ar
     }
     $selection = $arg1.'_'.$arg2.'_'.$arg3.'_'.$arg4.'_'.$arg5.'_'.$arg6.'_'.$arg7.'_'.$arg8.'_'.$arg9.'_'.$arg10;
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card25", "ConfirmReplace", $selection);
@@ -1914,8 +1914,8 @@ function actValidate25take3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card25", "Take3Confirm", $selection);
@@ -1947,8 +1947,8 @@ function actValidate25take2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card25", "Take2Confirm", $selection);
@@ -1980,8 +1980,8 @@ function actValidate32take2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
         $this->addPendingTarget ($pending['player_id'], "Card32", "Take2Confirm", $selection);
@@ -2013,8 +2013,8 @@ function actValidate33store2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card33", "AltarStore2Confirm", $selection);
@@ -2046,8 +2046,8 @@ function actValidate33store3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card33", "AltarStore3Confirm", $selection);
@@ -2079,8 +2079,8 @@ function actValidatebonuslearn( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPending ($pending['player_id'], "ConfirmBonusLearn", $selection);
@@ -2112,8 +2112,8 @@ function actValidate16bonuslearn( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card16", "ConfirmBonusLearn", $selection);
@@ -2145,8 +2145,8 @@ function actValidate37store3( $arg1, $arg2, $arg3)
     $selection = $arg1.'_'.$arg2.'_'.$arg3;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card37", "Power3Confirm", $selection);
@@ -2178,8 +2178,8 @@ function actValidate37store2( $arg1, $arg2)
     $selection = $arg1.'_'.$arg2;
         
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     if(spellbook::$instance->getGameStateValue('idclone') == 0)
     {
     $this->addPendingTarget ($pending['player_id'], "Card37", "Power3Confirm", $selection);
@@ -2208,7 +2208,7 @@ function actValidate37store2( $arg1, $arg2)
 
 function argPlayerTurn()
 {
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $arg = $this->callPending($pending, false);
     
     return $arg;
@@ -2280,10 +2280,10 @@ function callPending($pending, $execute, $arg1 = null, $arg2 = null)
 
 function stPending() {
    
-   $pending =  self::getObjectFromDB( "SELECT * FROM pending order by id desc limit 1");
+   $pending =  self::getObjectFromDB( "SELECT * FROM `pending` order by `id` desc limit 1");
    if($pending == null)
    {
-        // ici la partie prend fin si jamais la tablea pending est completement vide
+        // ici la partie prend fin si jamais la tablea `pending` est completement vide
         $this->gamestate->nextState( 'end' ); 
    }
    else
@@ -2294,7 +2294,7 @@ function stPending() {
        {
            // ici si je n'ai aucun selectable, ni bouton, la fonction arg est sauté et on passe directement à la fonction associée
            $this->callPending($pending, true);
-           self::DbQuery("delete from pending where id=".$pending['id']);
+           self::DbQuery("delete from `pending` where `id`=".$pending['id']);
            $this->gamestate->nextState( 'same' );  
        }
        /*else if(count($args['selectable']) + count($args['buttons']) == 1)  // je supprime cette partie qui permet de faire une selection automatique si jamais il n'y qu'une seule possibilité possible
@@ -2308,7 +2308,7 @@ function stPending() {
            {
                $this->callPending($pending, true, $arg1);
            }
-           self::DbQuery("delete from pending where id=".$pending['id']);
+           self::DbQuery("delete from `pending` where `id`=".$pending['id']);
            $this->gamestate->nextState( 'same' );  
        }*/
        else
@@ -2342,7 +2342,7 @@ function stPending() {
             switch ($statename) {
                 default:
                     $player_id = $this->getActivePlayerId();
-    	            self::DbQuery("delete from pending where player_id = {$player_id}");  //// ici on supprime toutes les lignes du joueur zombie de la pile pending... il ne pourra plus revenir en tant que joueur
+    	            self::DbQuery("delete from `pending` where `player_id` = {$player_id}");  //// ici on supprime toutes les lignes du joueur zombie de la pile pending... il ne pourra plus revenir en tant que joueur
                     $this->gamestate->nextState( "zombiePass" );
                 	break;
             }
@@ -2357,7 +2357,7 @@ function stPending() {
             return;
         }
 
-        throw new feException( "Zombie mode not supported at this game state: ".$statename );
+        throw new VisibleSystemException( "Zombie mode not supported at this game state: ".$statename );
     }
    
 ///////////////////////////////////////////////////////////////////////////////// 

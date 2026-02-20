@@ -14,11 +14,11 @@ class Clonecard11 extends Card
 
         $reserve = 'materiareserve_'.$this->player_id;
 
-        $nombretriangle = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 1", true ));
-        $nombrecarre = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 2", true ));
-        $nombrerond = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 3", true ));
+        $nombretriangle = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 1", true ));
+        $nombrecarre = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 2", true ));
+        $nombrerond = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 3", true ));
 
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 1 AND typerune !=0"));
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 1 AND `typerune` !=0"));
 
         //$ret["selected"][] = $parg1;
         $explode = explode("_", $parg1);
@@ -90,13 +90,13 @@ class Clonecard11 extends Card
             {
                 $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
                 $location = 'materiareserve_'.$this->player_id;
-                $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+                $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
                 $diff = array_diff($tableau1, $emplacement);
                 $emplacementlibre = array_slice($diff, 0, 1);
                 $premieremplacementlibre = $emplacementlibre[0];
 
                 $locationdiscard = 'materiadiscard_'.$this->player_id;
-                $idmateria = intval(self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$locationdiscard}'"));
+                $idmateria = intval(self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$locationdiscard}'"));
                 spellbook::$instance->materia->moveCard( $idmateria, $location, $premieremplacementlibre );
 
                 spellbook::$instance->notifyAllPlayers('move','', array(
@@ -158,7 +158,7 @@ class Clonecard11 extends Card
         if ($parg2 == "3")
         {
             $ret["selected"][] = 'materiacard_1_'.spellbook::$instance->getGameStateValue('idclone').'_1';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 3", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 3", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable"][] = "materia_".$idmateria;
@@ -168,7 +168,7 @@ class Clonecard11 extends Card
         if ($parg2 == "4")
         {
             $ret["selected"][] = 'materiacard_1_'.spellbook::$instance->getGameStateValue('idclone').'_2';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 1", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 1", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable"][] = "materia_".$idmateria;
@@ -178,7 +178,7 @@ class Clonecard11 extends Card
         if ($parg2 == "5")
         {
             $ret["selected"][] = 'materiacard_1_'.spellbook::$instance->getGameStateValue('idclone').'_3';
-            $id = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = 2", true );
+            $id = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = 2", true );
             foreach($id as $idmateria)
             {
                 $ret["selectable"][] = "materia_".$idmateria;
@@ -203,13 +203,13 @@ class Clonecard11 extends Card
             {
                 $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
                 $location = 'materiareserve_'.$this->player_id;
-                $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+                $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
                 $diff = array_diff($tableau1, $emplacement);
                 $emplacementlibre = array_slice($diff, 0, 1);
                 $premieremplacementlibre = $emplacementlibre[0];
 
                 $locationdiscard = 'materiadiscard_'.$this->player_id;
-                $idmateria = intval(self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$locationdiscard}'"));
+                $idmateria = intval(self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$locationdiscard}'"));
                 spellbook::$instance->materia->moveCard( $idmateria, $location, $premieremplacementlibre );
 
                 spellbook::$instance->notifyAllPlayers('move','', array(
@@ -261,13 +261,13 @@ class Clonecard11 extends Card
             {
                 $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
                 $location = 'materiareserve_'.$this->player_id;
-                $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+                $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
                 $diff = array_diff($tableau1, $emplacement);
                 $emplacementlibre = array_slice($diff, 0, 1);
                 $premieremplacementlibre = $emplacementlibre[0];
 
                 $locationdiscard = 'materiadiscard_'.$this->player_id;
-                $idmateria = intval(self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$locationdiscard}'"));
+                $idmateria = intval(self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$locationdiscard}'"));
                 spellbook::$instance->materia->moveCard( $idmateria, $location, $premieremplacementlibre );
 
                 spellbook::$instance->notifyAllPlayers('move','', array(
@@ -286,8 +286,8 @@ class Clonecard11 extends Card
             $explode = explode("_", $parg1);
             $idmateria = intval($explode[1]);
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $logdiscard = ($col*10)+$signe;
 
             spellbook::$instance->materia->moveCard( $idmateria, 'discard');
@@ -299,8 +299,8 @@ class Clonecard11 extends Card
             
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$this->player_id;
-            $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true ));
-            $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true ));
+            $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacement);
             $reste = 9 - $countreserve;
             if($reste == 1)
@@ -309,9 +309,9 @@ class Clonecard11 extends Card
                 $premier = $emplacementlibre[0];
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premier);
 
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -345,9 +345,9 @@ class Clonecard11 extends Card
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premier);
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $deuxieme);
 
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -360,9 +360,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria2 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $colormateria2 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $runemateria2 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
+                $idmateria2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $colormateria2 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $runemateria2 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria2,
                     'color' => $colormateria2,
@@ -401,9 +401,9 @@ class Clonecard11 extends Card
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $deuxieme);
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $troisieme);
 
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -416,9 +416,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria2 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $colormateria2 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $runemateria2 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
+                $idmateria2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $colormateria2 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $runemateria2 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria2,
                     'color' => $colormateria2,
@@ -431,9 +431,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria3 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
-                $colormateria3 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
-                $runemateria3 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
+                $idmateria3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
+                $colormateria3 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
+                $runemateria3 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria3,
                     'color' => $colormateria3,
@@ -479,9 +479,9 @@ class Clonecard11 extends Card
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $troisieme);
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $quatrieme);
 
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premier}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premier}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -494,9 +494,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria2 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $colormateria2 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
-                $runemateria2 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$deuxieme}");
+                $idmateria2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $colormateria2 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
+                $runemateria2 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$deuxieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria2,
                     'color' => $colormateria2,
@@ -509,9 +509,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria3 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
-                $colormateria3 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
-                $runemateria3 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$troisieme}");
+                $idmateria3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
+                $colormateria3 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
+                $runemateria3 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$troisieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria3,
                     'color' => $colormateria3,
@@ -524,9 +524,9 @@ class Clonecard11 extends Card
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria4 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$quatrieme}");
-                $colormateria4 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$quatrieme}");
-                $runemateria4 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$quatrieme}");
+                $idmateria4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$quatrieme}");
+                $colormateria4 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$quatrieme}");
+                $runemateria4 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$quatrieme}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria4,
                     'color' => $colormateria4,
@@ -570,7 +570,7 @@ class Clonecard11 extends Card
             if(spellbook::$instance->getGameStateValue('matinos')==0)
             {
             $locationdiscard = 'materiadiscard_'.$this->player_id;
-            $idmateriadiscardclone = intval(self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$locationdiscard}'"));
+            $idmateriadiscardclone = intval(self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$locationdiscard}'"));
             spellbook::$instance->materia->moveCard( $idmateriadiscardclone, 'discard');
                 spellbook::$instance->notifyAllPlayers('discard','', array(
                     'mobile' => $idmateriadiscardclone,
@@ -578,8 +578,8 @@ class Clonecard11 extends Card
                     );
 
             $log = array();
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateriadiscardclone}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateriadiscardclone}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateriadiscardclone}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateriadiscardclone}"));
             $log[] = ($col*10)+$signe;
 
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} discard ${log1}'), array(

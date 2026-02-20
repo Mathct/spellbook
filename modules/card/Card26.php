@@ -71,7 +71,7 @@ class Card26 extends Card
 
     public function Power5($parg1, $parg2, $varg1, $varg2)
     {
-        self::DbQuery( "UPDATE player set p26 = 1 WHERE player_id = {$this->player_id}" );
+        self::DbQuery( "UPDATE `player` set `p26` = 1 WHERE `player_id` = {$this->player_id}" );
         spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains the permanent power “Swiffness” Level 5' ), array(
             'player_name' => $this->player_name,
                             

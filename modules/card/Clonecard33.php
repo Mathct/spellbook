@@ -13,16 +13,16 @@ class Clonecard33 extends Card
         $player = spellbook::$instance->getGameStateValue('idclone');
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 3 AND typerune !=0")); //////ATTENTION set_color
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 3 AND `typerune` !=0")); //////ATTENTION set_color
 
         //$ret["selected"][] = $parg1;
         $explode = explode("_", $parg1);
         $card = intval($explode[1]);
         $joueur = intval($explode[2]);
         
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true ));
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
-        $countautel = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
+        $countautel = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true ));
 
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
@@ -122,14 +122,14 @@ class Clonecard33 extends Card
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
-        $ret['titleyou'] = clienttranslate('${you} must select 1 Materia from the reserve to swap');
+        $ret['titleyou'] = clienttranslate('${you} must select 1 `Materia` from the reserve to swap');
 
         $ret["selected"][] = 'materiacard_3_'.spellbook::$instance->getGameStateValue('idclone').'_1';
         
 
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$reserve}'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$reserve}'", true );
        
         foreach($ids as $id)
         {
@@ -164,13 +164,13 @@ class Clonecard33 extends Card
         $ret["selected3"] = array();
         $ret['buttons'] = array();
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
-        $ret['titleyou'] = clienttranslate('${you} must select 1 Materia from the familiar to swap');
+        $ret['titleyou'] = clienttranslate('${you} must select 1 `Materia` from the familiar to swap');
         
         $ret["selected3"][] = $parg1;
 
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true );
        
         foreach($ids as $id)
         {
@@ -234,8 +234,8 @@ class Clonecard33 extends Card
 
             $reserve = 'materiareserve_'.$this->player_id;
             $familier = 'materiafamilier_'.$this->player_id;
-            $locationmateriareserve = self::getUniqueValueFromDB("SELECT card_location_arg FROM materia WHERE card_id = {$idmateriareserve}");
-            $locationmateriafamilier = self::getUniqueValueFromDB("SELECT card_location_arg FROM materia WHERE card_id = {$idmateriafamilier}");
+            $locationmateriareserve = self::getUniqueValueFromDB("SELECT `card_location_arg` FROM `materia` WHERE `card_id` = {$idmateriareserve}");
+            $locationmateriafamilier = self::getUniqueValueFromDB("SELECT `card_location_arg` FROM `materia` WHERE `card_id` = {$idmateriafamilier}");
 
             spellbook::$instance->materia->moveCard( $idmateriareserve, $familier, $locationmateriafamilier);
             spellbook::$instance->materia->moveCard( $idmateriafamilier, $reserve, $locationmateriareserve);
@@ -255,11 +255,11 @@ class Clonecard33 extends Card
                 );
 
                 $log = array();
-                $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateriareserve}"));
-                $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateriareserve}"));
+                $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateriareserve}"));
+                $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateriareserve}"));
                 $log[] = ($col1*10)+$signe1;
-                $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateriafamilier}"));
-                $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateriafamilier}"));
+                $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateriafamilier}"));
+                $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateriafamilier}"));
                 $log[] = ($col2*10)+$signe2;
     
                 spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "GROWTH" (Clone) and swaps ${log1} from the reserve with ${log2} from the familiar'), array(
@@ -285,12 +285,12 @@ class Clonecard33 extends Card
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
-        $ret['titleyou'] = clienttranslate('${you} must select 2 Materia from the Altar to store');
+        $ret['titleyou'] = clienttranslate('${you} must select 2 `Materia` from the Altar to store');
 
         $ret["selected"][] = 'materiacard_3_'.spellbook::$instance->getGameStateValue('idclone').'_2';
         
 
-        $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true );
        
         foreach($ids as $id)
         {
@@ -350,7 +350,7 @@ class Clonecard33 extends Card
 
             $explode = explode("_", $parg1);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 2; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -362,8 +362,8 @@ class Clonecard33 extends Card
                     )
                     );
                 $idmateria = intval($explode[$i-1]);
-                $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-                $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+                $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+                $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
                 $log[] = ($col1*10)+$signe1;
             }
     
@@ -389,11 +389,11 @@ class Clonecard33 extends Card
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
-        $ret['titleyou'] = clienttranslate('${you} must select 3 Materia from the Altar to store');
+        $ret['titleyou'] = clienttranslate('${you} must select 3 `Materia` from the Altar to store');
         
         $ret["selected"][] = 'materiacard_3_'.spellbook::$instance->getGameStateValue('idclone').'_3';
 
-        $ids = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true );
        
         foreach($ids as $id)
         {
@@ -453,7 +453,7 @@ class Clonecard33 extends Card
 
             $explode = explode("_", $parg1);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 3; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -466,8 +466,8 @@ class Clonecard33 extends Card
                     );
 
                     $idmateria = intval($explode[$i-1]);
-                    $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-                    $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+                    $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+                    $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
                     $log[] = ($col1*10)+$signe1;
             }
         
@@ -493,7 +493,7 @@ class Clonecard33 extends Card
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
-        $ret['titleyou'] = clienttranslate('${you} must select 3 Materia from the Altar to store');
+        $ret['titleyou'] = clienttranslate('${you} must select 3 `Materia` from the Altar to store');
         
       
         return $ret;
@@ -502,15 +502,15 @@ class Clonecard33 extends Card
     public function Level($parg1, $parg2, $varg1, $varg2)
     {
         $materiacard = 'materiacard_5_'.$this->player_id;
-        $id = intval(self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location='{$materiacard}'"));
-        $emplacement = intval(self::getUniqueValueFromDB("SELECT card_location_arg FROM materia WHERE card_location='{$materiacard}'")) - 1;
-        $power = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune != 0"));
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune != 0"));
+        $id = intval(self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location`='{$materiacard}'"));
+        $emplacement = intval(self::getUniqueValueFromDB("SELECT `card_location_arg` FROM `materia` WHERE `card_location`='{$materiacard}'")) - 1;
+        $power = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` != 0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` != 0"));
 
         $powerdown = $power-1;
 
-        self::DbQuery( "UPDATE cards set typerune = 0 WHERE set_color = 5 AND power = {$power} AND player_id = {$this->player_id}" );
-        self::DbQuery( "UPDATE cards set typerune = {$rune} WHERE set_color = 5 AND power = {$powerdown} AND player_id = {$this->player_id}" );
+        self::DbQuery( "UPDATE `cards` set `typerune` = 0 WHERE `set_color` = 5 AND `power` = {$power} AND `player_id` = {$this->player_id}" );
+        self::DbQuery( "UPDATE `cards` set `typerune` = {$rune} WHERE `set_color` = 5 AND `power` = {$powerdown} AND `player_id` = {$this->player_id}" );
 
         spellbook::$instance->materia->moveCard( $id, $materiacard, $emplacement);
             spellbook::$instance->notifyAllPlayers('move','', array(

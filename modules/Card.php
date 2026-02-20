@@ -45,15 +45,15 @@ class Card extends APP_GameClass
 
         $player_id = spellbook::$instance->getActivePlayerId();
         
-        $p = self::getObjectFromDB("SELECT * FROM player WHERE player_id = {$player_id}");        
+        $p = self::getObjectFromDB("SELECT * FROM `player` WHERE `player_id` = {$player_id}");        
         $this->player_no = $p['player_no'];
         $this->player_id = $p['player_id'];
         $this->player_name = $p['player_name'];
         $this->player_score = $p['player_score'];
         $this->player_color = $p['player_color'];
-        $this->player_p26 = intval(self::getUniqueValueFromDB("SELECT p26 FROM player WHERE player_id = {$this->player_id}"));
-        $this->player_p36 = intval(self::getUniqueValueFromDB("SELECT p36 FROM player WHERE player_id = {$this->player_id}"));
-        $this->player_p37 = intval(self::getUniqueValueFromDB("SELECT p37 FROM player WHERE player_id = {$this->player_id}"));
+        $this->player_p26 = intval(self::getUniqueValueFromDB("SELECT `p26` FROM `player` WHERE `player_id` = {$this->player_id}"));
+        $this->player_p36 = intval(self::getUniqueValueFromDB("SELECT `p36` FROM `player` WHERE `player_id` = {$this->player_id}"));
+        $this->player_p37 = intval(self::getUniqueValueFromDB("SELECT `p37` FROM `player` WHERE `player_id` = {$this->player_id}"));
        
 
 

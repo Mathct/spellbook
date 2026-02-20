@@ -15,20 +15,20 @@ class Clonecard24 extends Card
         $familier = 'materiafamilier_'.$this->player_id;
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
 
 
-        $nombrereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}'", true ));
-        $nombrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$familier}'", true ));
-        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = {$rune}", true ));
-        $nombreruneautel = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = {$rune}", true ));
+        $nombrereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}'", true ));
+        $nombrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$familier}'", true ));
+        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = {$rune}", true ));
+        $nombreruneautel = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = {$rune}", true ));
 
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0")); //////ATTENTION set_color
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0")); //////ATTENTION set_color
 
          //$ret["selected"][] = $parg1;
          $explode = explode("_", $parg1);
@@ -143,9 +143,9 @@ class Clonecard24 extends Card
         
         $player = spellbook::$instance->getGameStateValue('idclone');
         $reserve = 'materiareserve_'.$this->player_id;
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
 
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = {$rune}", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = {$rune}", true );
 
         foreach($ids as $id)
         {
@@ -208,7 +208,7 @@ class Clonecard24 extends Card
             $idmateria = intval($explode[1]);
 
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             $nouvelemplacementfamilier = $countfamilier +1;
 
             spellbook::$instance->materia->moveCard( $idmateria, $familier, $nouvelemplacementfamilier);
@@ -221,8 +221,8 @@ class Clonecard24 extends Card
             )
             );
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
 
         spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "FOCUS" (Clone) and stores ${log1}'), array(
@@ -259,17 +259,17 @@ class Clonecard24 extends Card
         $familier = 'materiafamilier_'.$this->player_id;
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
 
-        $nombrereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}'", true ));
-        $nombrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$familier}'", true ));
-        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = {$rune}", true ));
-        $nombreruneautel = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = {$rune}", true ));
+        $nombrereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}'", true ));
+        $nombrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$familier}'", true ));
+        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = {$rune}", true ));
+        $nombreruneautel = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = {$rune}", true ));
         
         
 
@@ -320,14 +320,14 @@ class Clonecard24 extends Card
         $player = spellbook::$instance->getGameStateValue('idclone');
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
        
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = {$rune}", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = {$rune}", true );
 
         foreach($ids as $id)
         {
@@ -385,7 +385,7 @@ class Clonecard24 extends Card
 
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$this->player_id;
-            $emplacementmateria = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $emplacementmateria = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacementmateria);
 
             $explode = explode("_", $parg1);
@@ -403,8 +403,8 @@ class Clonecard24 extends Card
                 )
                 );
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
 
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} triggers "FOCUS" (Clone) and takes ${log1}'), array(
@@ -435,15 +435,15 @@ class Clonecard24 extends Card
         $player = spellbook::$instance->getGameStateValue('idclone');
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
         $location = 'materiareserve_'.$this->player_id;
        
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_type_arg = {$rune}", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_type_arg` = {$rune}", true );
 
         foreach($ids as $id)
         {
@@ -503,7 +503,7 @@ class Clonecard24 extends Card
 
             $explode = explode("_", $parg1);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 2; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -516,8 +516,8 @@ class Clonecard24 extends Card
                     );
 
             $idmateria = intval($explode[$i-1]);
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
 
             }
@@ -552,12 +552,12 @@ class Clonecard24 extends Card
         $reserve = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
         $player = spellbook::$instance->getGameStateValue('idclone');
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
 
-        $nombrereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}'", true ));
-        $nombrefamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$familier}'", true ));
-        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type_arg = {$rune}", true ));
-        $nombreruneautel = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = {$rune}", true ));
+        $nombrereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}'", true ));
+        $nombrefamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$familier}'", true ));
+        $nombrerunereserve = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type_arg` = {$rune}", true ));
+        $nombreruneautel = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = {$rune}", true ));
         
         
 
@@ -607,9 +607,9 @@ class Clonecard24 extends Card
         $ret['titleyou'] = clienttranslate('${you} must select 2 Materia to take');
         
         $player = spellbook::$instance->getGameStateValue('idclone');
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
        
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_type_arg = {$rune}", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_type_arg` = {$rune}", true );
 
         foreach($ids as $id)
         {
@@ -672,7 +672,7 @@ class Clonecard24 extends Card
 
             $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $location = 'materiareserve_'.$this->player_id;
-            $emplacementmateria = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+            $emplacementmateria = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
             $diff = array_diff($tableau1, $emplacementmateria);
             $emplacementlibre = array_slice($diff, 0, 2);
 
@@ -692,8 +692,8 @@ class Clonecard24 extends Card
                     )
                     );
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
 
             }
@@ -726,10 +726,10 @@ class Clonecard24 extends Card
         $ret['titleyou'] = clienttranslate('${you} must select 3 Materia to store');
         
         $player = spellbook::$instance->getGameStateValue('idclone');
-        $rune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 4 AND typerune !=0"));
+        $rune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 4 AND `typerune` !=0"));
         $location = 'materiareserve_'.$this->player_id;
        
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_type_arg = {$rune}", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_type_arg` = {$rune}", true );
 
         foreach($ids as $id)
         {
@@ -792,7 +792,7 @@ class Clonecard24 extends Card
 
             $explode = explode("_", $parg1);
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 3; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -804,8 +804,8 @@ class Clonecard24 extends Card
                     )
                     );
             $idmateria = intval($explode[$i-1]);
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log[] = ($col*10)+$signe;
 
             }

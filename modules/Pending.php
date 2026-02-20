@@ -4,15 +4,15 @@ class Pending extends APP_GameClass
     public function __construct($player_id)
     {
         $this->player_id = $player_id;
-        $p = self::getObjectFromDB("SELECT * FROM player WHERE player_id = {$player_id}");        
+        $p = self::getObjectFromDB("SELECT * FROM `player` WHERE `player_id` = {$player_id}");        
         $this->player_no = $p['player_no'];
         $this->player_id = $p['player_id'];
         $this->player_name = $p['player_name'];
         $this->player_score = $p['player_score'];
         $this->player_color = $p['player_color'];
-        $this->player_p26 = intval(self::getUniqueValueFromDB("SELECT p26 FROM player WHERE player_id = {$this->player_id}")); //permanent 2 matins par journée
-        $this->player_p36 = intval(self::getUniqueValueFromDB("SELECT p36 FROM player WHERE player_id = {$this->player_id}"));
-        $this->player_p37 = intval(self::getUniqueValueFromDB("SELECT p37 FROM player WHERE player_id = {$this->player_id}"));
+        $this->player_p26 = intval(self::getUniqueValueFromDB("SELECT `p26` FROM `player` WHERE `player_id` = {$this->player_id}")); //permanent 2 matins par journée
+        $this->player_p36 = intval(self::getUniqueValueFromDB("SELECT `p36` FROM `player` WHERE `player_id` = {$this->player_id}"));
+        $this->player_p37 = intval(self::getUniqueValueFromDB("SELECT `p37` FROM `player` WHERE `player_id` = {$this->player_id}"));
     }
 
 ////////////////////////////////////////////////////    
@@ -34,9 +34,9 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} must choose a morning action');
         
 
-        $counttake = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true ));
+        $counttake = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true ));
         $location = 'materiareserve_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true ));
         
         if(($counttake >= 1) && ($countreserve<9))
         {
@@ -51,7 +51,7 @@ class Pending extends APP_GameClass
             $ret['buttons'][]='draw1'; 
         }
 
-        $countcard = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 1 AND type = 0", true ));
+        $countcard = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 1 AND `type` = 0", true ));
         if ($countcard >= 1)
         {
             $ret['buttons'][]='cardaction'; 
@@ -112,9 +112,9 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} must choose a morning action (Bonus)');
         
 
-        $counttake = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true ));
+        $counttake = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true ));
         $location = 'materiareserve_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true ));
 
         if(($counttake >= 1) && ($countreserve<9))
         {
@@ -129,7 +129,7 @@ class Pending extends APP_GameClass
             $ret['buttons'][]='draw1'; 
         }
 
-        $countcard = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 1 AND type = 0", true ));
+        $countcard = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 1 AND `type` = 0", true ));
         if ($countcard >= 1)
         {
             $ret['buttons'][]='cardaction'; 
@@ -198,7 +198,7 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} takes a Materia');
         $ret['titleyou'] = clienttranslate('${you} must select a Materia');
 
-        $selectable = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='materiaautel'", true );
+        $selectable = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='materiaautel'", true );
         foreach ($selectable as $materia)
         {
             $ret["selectable"][] = 'materia_'.$materia;
@@ -269,7 +269,7 @@ class Pending extends APP_GameClass
         {*/
         $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         $location = 'materiareserve_'.$this->player_id;
-        $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+        $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
         $diff = array_diff($tableau1, $emplacement);
         $emplacementlibre = array_slice($diff, 0, 1);
         $premieremplacementlibre = $emplacementlibre[0];
@@ -278,8 +278,8 @@ class Pending extends APP_GameClass
         $idmateria = intval($explode[1]);
         spellbook::$instance->materia->moveCard( $idmateria, $location, $premieremplacementlibre );
 
-        $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-        $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+        $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+        $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
         $log = ($col*10)+$signe;
 
         spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} takes ${log}' ), array(
@@ -356,7 +356,7 @@ class Pending extends APP_GameClass
         
         $tableau1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         $location = 'materiareserve_'.$this->player_id;
-        $emplacement = self::getObjectListFromDB( "SELECT card_location_arg FROM materia WHERE card_location ='{$location}' ORDER BY card_location_arg ASC", true );
+        $emplacement = self::getObjectListFromDB( "SELECT `card_location_arg` FROM `materia` WHERE `card_location` ='{$location}' ORDER BY `card_location_arg` ASC", true );
         $diff = array_diff($tableau1, $emplacement);
         
 
@@ -366,9 +366,9 @@ class Pending extends APP_GameClass
                 $premieremplacementlibre = $emplacementlibre[0];
 
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premieremplacementlibre);
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
 
                 $col1= intval($colormateria1);
                 $signe1= intval($runemateria1);
@@ -395,9 +395,9 @@ class Pending extends APP_GameClass
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $premieremplacementlibre);
                 spellbook::$instance->materia->pickCardForLocation( 'deck', $location, $secondemplacementlibre);
 
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$premieremplacementlibre}");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$premieremplacementlibre}");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -410,9 +410,9 @@ class Pending extends APP_GameClass
 
                 spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
-                $idmateria2 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$secondemplacementlibre}");
-                $colormateria2 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$secondemplacementlibre}");
-                $runemateria2 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = '{$location}' AND card_location_arg = {$secondemplacementlibre}");
+                $idmateria2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$secondemplacementlibre}");
+                $colormateria2 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$secondemplacementlibre}");
+                $runemateria2 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = '{$location}' AND `card_location_arg` = {$secondemplacementlibre}");
 
                 $col1= intval($colormateria1);
                 $signe1= intval($runemateria1);
@@ -474,7 +474,7 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
         $ret['titleyou'] = clienttranslate('${you} must select a card');
 
-        $color = self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 1 AND type = 0", true );
+        $color = self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 1 AND `type` = 0", true );
         
         foreach ($color as $card)
         {
@@ -503,7 +503,7 @@ class Pending extends APP_GameClass
         {
             $explode = explode("_", $varg1);
             $color = intval($explode[1]);
-            $set = self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE player_id={$this->player_id} AND set_color = {$color} AND typerune !=0");
+            $set = self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = {$color} AND `typerune` !=0");
 
             spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "init", $varg1);
         }
@@ -531,15 +531,15 @@ class Pending extends APP_GameClass
 
         $location = 'materiareserve_'.$this->player_id;
         $familier = 'materiafamilier_'.$this->player_id;
-        $countreserve = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true ));
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$familier}'", true ));
+        $countreserve = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
         if(($countreserve >=1)&&($countfamilier < 14))
         {
         $ret['buttons'][]='store';
         }
 
-        $countcard = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 2", true ));
+        $countcard = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 2", true ));
         if ($countcard >= 1)
         {
             $ret['buttons'][]='cardaction'; 
@@ -598,7 +598,7 @@ class Pending extends APP_GameClass
         $ret['titleyou'] = clienttranslate('${you} must choose the Materia to store');
 
         $location = 'materiareserve_'.$this->player_id;
-        $selectable = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}'", true );
+        $selectable = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}'", true );
         foreach ($selectable as $materia)
         {
             $ret["selectable"][] = 'materia_'.$materia;
@@ -658,13 +658,13 @@ class Pending extends APP_GameClass
             $idmateria = intval($explode[1]);
 
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             $nouvelemplacementfamilier = $countfamilier +1;
 
             spellbook::$instance->materia->moveCard( $idmateria, $familier, $nouvelemplacementfamilier);
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idmateria}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idmateria}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idmateria}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idmateria}"));
             $log = ($col*10)+$signe;
         
 
@@ -692,7 +692,7 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
         $ret['titleyou'] = clienttranslate('${you} must select a card');
 
-        $color = self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 2", true );
+        $color = self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 2", true );
         
         foreach ($color as $card)
         {
@@ -714,7 +714,7 @@ class Pending extends APP_GameClass
         {
             $explode = explode("_", $varg1);
             $color = intval($explode[1]);
-            $set = self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE player_id={$this->player_id} AND set_color = {$color} AND typerune !=0");
+            $set = self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = {$color} AND `typerune` !=0");
 
             spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "init", $varg1);
         }
@@ -747,7 +747,7 @@ class Pending extends APP_GameClass
         ////// Test Rouge //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirrouge = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 1", true );
+        $pouvoirrouge = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 1", true );
         $testpouvoirrouge = 0;
         foreach ($pouvoirrouge as $valeur) 
         {
@@ -760,12 +760,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirrouge == 0)
         {
-            $nombrerouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true ));
+            $nombrerouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true ));
             if ($nombrerouge >= 1)
             {
-            $nombretrianglenonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 1", true ));
-            $nombrecarrenonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 2", true ));
-            $nombrerondnonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 3", true ));
+            $nombretrianglenonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 2", true ));
+            $nombrerondnonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 3", true ));
             $calcul = $nombrerouge + floor($nombrecarrenonrouge/3) + floor($nombretrianglenonrouge/3) + floor($nombrerondnonrouge/3); 
             if ($calcul >= 3)
             {
@@ -778,7 +778,7 @@ class Pending extends APP_GameClass
         ////// Test Violet //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirviolet = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 2", true );
+        $pouvoirviolet = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 2", true );
         $testpouvoirviolet = 0;
         foreach ($pouvoirviolet as $valeur) 
         {
@@ -791,12 +791,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirviolet == 0)
         {
-            $nombreviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true ));
+            $nombreviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true ));
             if ($nombreviolet >= 1)
             {
-            $nombretrianglenonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 1", true ));
-            $nombrecarrenonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 2", true ));
-            $nombrerondnonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 3", true ));
+            $nombretrianglenonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 2", true ));
+            $nombrerondnonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 3", true ));
             $calcul = $nombreviolet + floor($nombrecarrenonviolet/3) + floor($nombretrianglenonviolet/3) + floor($nombrerondnonviolet/3); 
             if ($calcul >= 3)
             {
@@ -809,7 +809,7 @@ class Pending extends APP_GameClass
         ////// Test Vert //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirvert = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 3", true );
+        $pouvoirvert = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 3", true );
         $testpouvoirvert = 0;
         foreach ($pouvoirvert as $valeur) 
         {
@@ -822,12 +822,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirvert == 0)
         {
-            $nombrevert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true ));
+            $nombrevert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true ));
             if ($nombrevert >= 1)
             {
-            $nombretrianglenonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 1", true ));
-            $nombrecarrenonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 2", true ));
-            $nombrerondnonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 3", true ));
+            $nombretrianglenonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 2", true ));
+            $nombrerondnonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 3", true ));
             $calcul = $nombrevert + floor($nombrecarrenonvert/3) + floor($nombretrianglenonvert/3) + floor($nombrerondnonvert/3); 
             if ($calcul >= 3)
             {
@@ -840,7 +840,7 @@ class Pending extends APP_GameClass
         ////// Test Noir //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirnoir = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 4", true );
+        $pouvoirnoir = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 4", true );
         $testpouvoirnoir = 0;
         foreach ($pouvoirnoir as $valeur) 
         {
@@ -853,12 +853,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirnoir == 0)
         {
-            $nombrenoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true ));
+            $nombrenoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true ));
             if ($nombrenoir >= 1)
             {
-            $nombretrianglenonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 1", true ));
-            $nombrecarrenonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 2", true ));
-            $nombrerondnonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 3", true ));
+            $nombretrianglenonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 2", true ));
+            $nombrerondnonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 3", true ));
             $calcul = $nombrenoir + floor($nombrecarrenonnoir/3) + floor($nombretrianglenonnoir/3) + floor($nombrerondnonnoir/3); 
             if ($calcul >= 3)
             {
@@ -872,7 +872,7 @@ class Pending extends APP_GameClass
         ////// Test Blanc //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirblanc = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 5", true );
+        $pouvoirblanc = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 5", true );
         $testpouvoirblanc = 0;
         foreach ($pouvoirblanc as $valeur) 
         {
@@ -885,12 +885,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirblanc == 0)
         {
-            $nombreblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true ));
+            $nombreblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true ));
             if ($nombreblanc >= 1)
             {
-            $nombretrianglenonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 1", true ));
-            $nombrecarrenonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 2", true ));
-            $nombrerondnonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 3", true ));
+            $nombretrianglenonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 2", true ));
+            $nombrerondnonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 3", true ));
             $calcul = $nombreblanc + floor($nombrecarrenonblanc/3) + floor($nombretrianglenonblanc/3) + floor($nombrerondnonblanc/3); 
             if ($calcul >= 3)
             {
@@ -904,7 +904,7 @@ class Pending extends APP_GameClass
         ////// Test Bleu //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirbleu = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 6", true );
+        $pouvoirbleu = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 6", true );
         $testpouvoirbleu = 0;
         foreach ($pouvoirbleu as $valeur) 
         {
@@ -917,12 +917,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirbleu == 0)
         {
-            $nombrebleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true ));
+            $nombrebleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true ));
             if ($nombrebleu >= 1)
             {
-            $nombretrianglenonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 1", true ));
-            $nombrecarrenonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 2", true ));
-            $nombrerondnonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 3", true ));
+            $nombretrianglenonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 2", true ));
+            $nombrerondnonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 3", true ));
             $calcul = $nombrebleu + floor($nombrecarrenonbleu/3) + floor($nombretrianglenonbleu/3) + floor($nombrerondnonbleu/3); 
             if ($calcul >= 3)
             {
@@ -935,7 +935,7 @@ class Pending extends APP_GameClass
         ////// Test Jaune //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirjaune = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 7", true );
+        $pouvoirjaune = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 7", true );
         $testpouvoirjaune = 0;
         foreach ($pouvoirjaune as $valeur) 
         {
@@ -948,12 +948,12 @@ class Pending extends APP_GameClass
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirjaune == 0)
         {
-            $nombrejaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true ));
+            $nombrejaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true ));
             if ($nombrejaune >= 1)
             {
-            $nombretrianglenonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 1", true ));
-            $nombrecarrenonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 2", true ));
-            $nombrerondnonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 3", true ));
+            $nombretrianglenonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 1", true ));
+            $nombrecarrenonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 2", true ));
+            $nombrerondnonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 3", true ));
             $calcul = $nombrejaune + floor($nombrecarrenonjaune/3) + floor($nombretrianglenonjaune/3) + floor($nombrerondnonjaune/3); 
             if ($calcul >= 3)
             {
@@ -970,7 +970,7 @@ class Pending extends APP_GameClass
             $ret['buttons'][]='learn';
         }
 
-        $countcard = count(self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 3 AND type = 0", true ));
+        $countcard = count(self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 3 AND `type` = 0", true ));
         if ($countcard >= 1)
         {
             $ret['buttons'][]='cardaction'; 
@@ -1037,7 +1037,7 @@ class Pending extends APP_GameClass
        ////// Test Rouge //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirrouge = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 1", true );
+       $pouvoirrouge = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 1", true );
        $testpouvoirrouge = 0;
        foreach ($pouvoirrouge as $valeur) 
        {
@@ -1050,12 +1050,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirrouge == 0)
        {
-           $nombrerouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true ));
+           $nombrerouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true ));
            if ($nombrerouge >= 1)
             {
-           $nombretrianglenonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 1", true ));
-           $nombrecarrenonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 2", true ));
-           $nombrerondnonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = 3", true ));
+           $nombretrianglenonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 2", true ));
+           $nombrerondnonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = 3", true ));
            $calcul = $nombrerouge + floor($nombrecarrenonrouge/3) + floor($nombretrianglenonrouge/3) + floor($nombrerondnonrouge/3); 
            if ($calcul >= 3)
            {
@@ -1078,7 +1078,7 @@ class Pending extends APP_GameClass
        ////// Test Violet //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirviolet = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 2", true );
+       $pouvoirviolet = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 2", true );
        $testpouvoirviolet = 0;
        foreach ($pouvoirviolet as $valeur) 
        {
@@ -1091,12 +1091,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirviolet == 0)
        {
-           $nombreviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true ));
+           $nombreviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true ));
            if ($nombreviolet >= 1)
             {
-           $nombretrianglenonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 1", true ));
-           $nombrecarrenonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 2", true ));
-           $nombrerondnonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = 3", true ));
+           $nombretrianglenonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 2", true ));
+           $nombrerondnonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = 3", true ));
            $calcul = $nombreviolet + floor($nombrecarrenonviolet/3) + floor($nombretrianglenonviolet/3) + floor($nombrerondnonviolet/3); 
            if ($calcul >= 3)
            {
@@ -1119,7 +1119,7 @@ class Pending extends APP_GameClass
        ////// Test Vert //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirvert = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 3", true );
+       $pouvoirvert = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 3", true );
        $testpouvoirvert = 0;
        foreach ($pouvoirvert as $valeur) 
        {
@@ -1132,12 +1132,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirvert == 0)
        {
-           $nombrevert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true ));
+           $nombrevert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true ));
            if ($nombrevert >= 1)
             {
-           $nombretrianglenonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 1", true ));
-           $nombrecarrenonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 2", true ));
-           $nombrerondnonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = 3", true ));
+           $nombretrianglenonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 2", true ));
+           $nombrerondnonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = 3", true ));
            $calcul = $nombrevert + floor($nombrecarrenonvert/3) + floor($nombretrianglenonvert/3) + floor($nombrerondnonvert/3); 
            if ($calcul >= 3)
            {
@@ -1160,7 +1160,7 @@ class Pending extends APP_GameClass
        ////// Test Noir //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirnoir = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 4", true );
+       $pouvoirnoir = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 4", true );
        $testpouvoirnoir = 0;
        foreach ($pouvoirnoir as $valeur) 
        {
@@ -1173,12 +1173,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirnoir == 0)
        {
-           $nombrenoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true ));
+           $nombrenoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true ));
            if ($nombrenoir >= 1)
             {
-           $nombretrianglenonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 1", true ));
-           $nombrecarrenonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 2", true ));
-           $nombrerondnonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = 3", true ));
+           $nombretrianglenonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 2", true ));
+           $nombrerondnonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = 3", true ));
            $calcul = $nombrenoir + floor($nombrecarrenonnoir/3) + floor($nombretrianglenonnoir/3) + floor($nombrerondnonnoir/3); 
            if ($calcul >= 3)
            {
@@ -1202,7 +1202,7 @@ class Pending extends APP_GameClass
        ////// Test Blanc //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirblanc = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 5", true );
+       $pouvoirblanc = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 5", true );
        $testpouvoirblanc = 0;
        foreach ($pouvoirblanc as $valeur) 
        {
@@ -1215,12 +1215,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirblanc == 0)
        {
-           $nombreblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true ));
+           $nombreblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true ));
            if ($nombreblanc >= 1)
             {
-           $nombretrianglenonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 1", true ));
-           $nombrecarrenonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 2", true ));
-           $nombrerondnonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = 3", true ));
+           $nombretrianglenonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 2", true ));
+           $nombrerondnonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = 3", true ));
            $calcul = $nombreblanc + floor($nombrecarrenonblanc/3) + floor($nombretrianglenonblanc/3) + floor($nombrerondnonblanc/3); 
            if ($calcul >= 3)
            {
@@ -1244,7 +1244,7 @@ class Pending extends APP_GameClass
        ////// Test Bleu //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirbleu = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 6", true );
+       $pouvoirbleu = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 6", true );
        $testpouvoirbleu = 0;
        foreach ($pouvoirbleu as $valeur) 
        {
@@ -1257,12 +1257,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirbleu == 0)
        {
-           $nombrebleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true ));
+           $nombrebleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true ));
            if ($nombrebleu >= 1)
             {
-           $nombretrianglenonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 1", true ));
-           $nombrecarrenonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 2", true ));
-           $nombrerondnonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = 3", true ));
+           $nombretrianglenonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 2", true ));
+           $nombrerondnonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = 3", true ));
            $calcul = $nombrebleu + floor($nombrecarrenonbleu/3) + floor($nombretrianglenonbleu/3) + floor($nombrerondnonbleu/3); 
            if ($calcul >= 3)
            {
@@ -1285,7 +1285,7 @@ class Pending extends APP_GameClass
        ////// Test Jaune //////
 
        ///// est ce que sort a déjà été appris?////
-       $pouvoirjaune = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 7", true );
+       $pouvoirjaune = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 7", true );
        $testpouvoirjaune = 0;
        foreach ($pouvoirjaune as $valeur) 
        {
@@ -1298,12 +1298,12 @@ class Pending extends APP_GameClass
        //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
        if($testpouvoirjaune == 0)
        {
-           $nombrejaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true ));
+           $nombrejaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true ));
            if ($nombrejaune >= 1)
             {
-           $nombretrianglenonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 1", true ));
-           $nombrecarrenonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 2", true ));
-           $nombrerondnonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = 3", true ));
+           $nombretrianglenonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 1", true ));
+           $nombrecarrenonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 2", true ));
+           $nombrerondnonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = 3", true ));
            $calcul = $nombrejaune + floor($nombrecarrenonjaune/3) + floor($nombretrianglenonjaune/3) + floor($nombrerondnonjaune/3); 
            if ($calcul >= 3)
            {
@@ -1363,10 +1363,10 @@ class Pending extends APP_GameClass
 
         /////////// test niveau possible //////
         $reserve = 'materiareserve_'.$this->player_id;
-        $nombre = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = {$color}", true ));
-        $nombretriangle = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != {$color} AND card_type_arg = 1", true ));
-        $nombrecarre = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != {$color} AND card_type_arg = 2", true ));
-        $nombrerond = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != {$color} AND card_type_arg = 3", true ));
+        $nombre = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = {$color}", true ));
+        $nombretriangle = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != {$color} AND `card_type_arg` = 1", true ));
+        $nombrecarre = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != {$color} AND `card_type_arg` = 2", true ));
+        $nombrerond = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != {$color} AND `card_type_arg` = 3", true ));
         $calcul = $nombre + floor($nombrecarre/3) + floor($nombretriangle/3) + floor($nombrerond/3);
 
         $ret["selectable"][] = 'materiacard_'.$color.'_'.$this->player_id.'_1';
@@ -1434,9 +1434,9 @@ class Pending extends APP_GameClass
         $explode = explode("_", $parg1);
         $color = intval ($explode[1]);
         $lvl = intval ($explode[3]);
-        $selectable = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}' AND card_type !={$color}", true );
+        $selectable = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}' AND `card_type` !={$color}", true );
         
-        $selected = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}' AND card_type ={$color}", true );
+        $selected = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}' AND `card_type` ={$color}", true );
         $countselected = count($selected);
 
         foreach ($selectable as $materia)
@@ -1564,7 +1564,7 @@ class Pending extends APP_GameClass
 
         foreach ($tableausanszero as $id)
         {
-            $testcolor = intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id = {$id}"));
+            $testcolor = intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id` = {$id}"));
             if($testcolor == spellbook::$instance->getGameStateValue('color'))
             {
                 $nombre = $nombre +1; 
@@ -1572,7 +1572,7 @@ class Pending extends APP_GameClass
             
             else
             {
-                $testrune = intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id = {$id}"));
+                $testrune = intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id` = {$id}"));
                 
                 if ($testrune == 1)
                 {
@@ -1638,7 +1638,7 @@ class Pending extends APP_GameClass
 
         foreach($tableausanszero as $materia)
         {
-            $testcolor = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id = {$materia}");
+            $testcolor = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id` = {$materia}");
             if($testcolor == spellbook::$instance->getGameStateValue('color'))
             {
                 $ret["selectable"][] = 'materia_'.$materia;
@@ -1717,13 +1717,13 @@ class Pending extends APP_GameClass
         {*/
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
 
-            $setcardjaune = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE player_id={$this->player_id} AND set_color = 7 AND power = 3"));
+            $setcardjaune = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 7 AND `power` = 3"));
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
             if (((spellbook::$instance->getGameStateValue('color')==7)&&(spellbook::$instance->getGameStateValue('position')==3)&&($setcardjaune==3)&&($countfamilier <=13))||(($this->player_p37 == 1)&&($countfamilier <=13)))
             {
-                self::DbQuery( "INSERT INTO bonuslearn (player_id, materiacard, listeselected, placeoncard) VALUES ({$this->player_id}, '{$selected}', '{$parg1}', '{$parg2}')" );
+                self::DbQuery( "INSERT INTO `bonuslearn` (`player_id`, `materiacard`, `listeselected`, `placeoncard`) VALUES ({$this->player_id}, '{$selected}', '{$parg1}', '{$parg2}')" );
                 spellbook::$instance->addPending($this->player_id, "SoirLearnBonus", $parg1);
             }
         
@@ -1741,16 +1741,16 @@ class Pending extends APP_GameClass
 
             $explode2 = explode('_', $parg2);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
 
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" level ${power}' ), array(
@@ -1782,10 +1782,10 @@ class Pending extends APP_GameClass
 
             ///// test immediat ou permanent
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "Power".$power);
             }
             else
@@ -1807,7 +1807,7 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} wants to trigger an action card');
         $ret['titleyou'] = clienttranslate('${you} must select a card');
 
-        $color = self::getObjectListFromDB( "SELECT set_color FROM cards WHERE player_id ={$this->player_id} AND typerune !=0 AND jour = 3 AND type = 0", true );
+        $color = self::getObjectListFromDB( "SELECT `set_color` FROM `cards` WHERE `player_id` ={$this->player_id} AND `typerune` !=0 AND `jour` = 3 AND `type` = 0", true );
         
         foreach ($color as $card)
         {
@@ -1829,7 +1829,7 @@ class Pending extends APP_GameClass
         {
             $explode = explode("_", $varg1);
             $color = intval($explode[1]);
-            $set = self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE player_id={$this->player_id} AND set_color = {$color} AND typerune !=0");
+            $set = self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = {$color} AND `typerune` !=0");
 
             spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "init", $varg1);
         }
@@ -1846,9 +1846,9 @@ class Pending extends APP_GameClass
         
 
         $familier = 'materiafamilier_'.$this->player_id;
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
-        $selected = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+        $selected = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
         $explode2 = explode('_', $selected);
         $idselected = $explode2[1];
 
@@ -1895,7 +1895,7 @@ class Pending extends APP_GameClass
     {
         if($varg1 == "cancel")
         {
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
             spellbook::$instance->addPending($this->player_id, "SoirLearn5", $parg1);
         }
 
@@ -1906,7 +1906,7 @@ class Pending extends APP_GameClass
             $idstore1 = intval($explode1[1]);
             $familier = 'materiafamilier_'.$this->player_id;
 
-            $listeselected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
+            $listeselected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode = explode('_', $listeselected);
             $tableau = array_map('intval', $explode);
             /// enlever les zero du tableau
@@ -1917,19 +1917,19 @@ class Pending extends APP_GameClass
             $tableausanszero = array_values($tableausanszero);
 
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
-            $placeoncard = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+            $placeoncard = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode2 = explode('_', $placeoncard);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
 
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" level ${power}' ), array(
@@ -1957,7 +1957,7 @@ class Pending extends APP_GameClass
 
 
             
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             
                 $nouvelemplacementfamilier = $countfamilier +1;
                 spellbook::$instance->materia->moveCard( $explode1[1], $familier, $nouvelemplacementfamilier);
@@ -1968,8 +1968,8 @@ class Pending extends APP_GameClass
                     )
                     );
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore1}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore1}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore1}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore1}"));
             $log[] = ($col*10)+$signe;
     
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} stores ${log1} ("COMMUNION")'), array(
@@ -1984,13 +1984,13 @@ class Pending extends APP_GameClass
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
 
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "Power".$power);
             }
             else
@@ -2032,8 +2032,8 @@ class Pending extends APP_GameClass
     {
         /*if($varg1 == "cancel")
         {
-            $selected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            $selected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
             spellbook::$instance->addPending($this->player_id, "SoirLearn5", $selected);
         }
 
@@ -2045,7 +2045,7 @@ class Pending extends APP_GameClass
             $idstore2 = intval($explode1[1]);
             $familier = 'materiafamilier_'.$this->player_id;
 
-            $listeselected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
+            $listeselected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode = explode('_', $listeselected);
             $tableau = array_map('intval', $explode);
             /// enlever les zero du tableau
@@ -2056,19 +2056,19 @@ class Pending extends APP_GameClass
             $tableausanszero = array_values($tableausanszero);
 
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
-            $placeoncard = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+            $placeoncard = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode2 = explode('_', $placeoncard);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
 
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" level ${power}' ), array(
@@ -2096,7 +2096,7 @@ class Pending extends APP_GameClass
 
 
             
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 2; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -2109,11 +2109,11 @@ class Pending extends APP_GameClass
                     );
             }
 
-            $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore1}"));
-            $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore1}"));
+            $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore1}"));
+            $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore1}"));
             $log[] = ($col1*10)+$signe1;
-            $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore2}"));
-            $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore2}"));
+            $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore2}"));
+            $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore2}"));
             $log[] = ($col2*10)+$signe2;
     
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} stores ${log1} ${log2} ("COMMUNION")'), array(
@@ -2130,13 +2130,13 @@ class Pending extends APP_GameClass
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
 
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "Power".$power);
             }
             else
@@ -2180,15 +2180,15 @@ function Autel($parg1, $parg2, $varg1, $varg2)
 
     if (spellbook::$instance->getGameStateValue('solo')==0)
     {       
-    $nbre = count(self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location = 'materiaautel'", true ));    
+    $nbre = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` = 'materiaautel'", true ));    
     if ($nbre < 5)
     {
         for($i = $nbre+1; $i <=5; $i++)
         {
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiaautel', $i);
-            $id = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
-            $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
-            $rune = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
+            $id = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
+            $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
+            $rune = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $id,
                 'color' => $color,
@@ -2205,9 +2205,9 @@ function Autel($parg1, $parg2, $varg1, $varg2)
     {
             $emplacement = $nbre+1;
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiaautel', $emplacement);
-            $id = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$emplacement}");
-            $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$emplacement}");
-            $rune = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$emplacement}");
+            $id = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$emplacement}");
+            $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$emplacement}");
+            $rune = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$emplacement}");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $id,
                 'color' => $color,
@@ -2224,7 +2224,7 @@ function Autel($parg1, $parg2, $varg1, $varg2)
             
         for($i = 1; $i <=$nbre; $i++)
         {
-            $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+            $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
             foreach($ids as $idmateriadiscard)
             {
                 spellbook::$instance->materia->moveCard( $idmateriadiscard, 'discard');
@@ -2242,9 +2242,9 @@ function Autel($parg1, $parg2, $varg1, $varg2)
         {
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiaautel', $j);
             
-            $id = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
-            $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
-            $rune = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
+            $id = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
+            $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
+            $rune = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $id,
                 'color' => $color,
@@ -2350,9 +2350,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
         if($parg1 == "1")
         {
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 1);
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -2368,9 +2368,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
         if($parg1 == "2")
         {
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 1);
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -2380,9 +2380,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
                     )
                     );
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 2);
-            $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
-            $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
-            $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
+            $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
+            $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
+            $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $idmateria1,
                 'color' => $colormateria1,
@@ -2398,9 +2398,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
         if($parg1 == "3")
         {
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 1);
-                $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
-                $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 1");
+                $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
+                $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 1");
                 spellbook::$instance->notifyAllPlayers('draw','', array(
                     'id' => $idmateria1,
                     'color' => $colormateria1,
@@ -2410,9 +2410,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
                     )
                     );
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 2);
-            $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
-            $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
-            $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 2");
+            $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
+            $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
+            $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 2");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $idmateria1,
                 'color' => $colormateria1,
@@ -2423,9 +2423,9 @@ function SoloInitConfirm($parg1, $parg2, $varg1, $varg2)
                 );
 
             spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiareserveopponent', 3);
-            $idmateria1 = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 3");
-            $colormateria1 = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 3");
-            $runemateria1 = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiareserveopponent' AND card_location_arg = 3");
+            $idmateria1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 3");
+            $colormateria1 = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 3");
+            $runemateria1 = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiareserveopponent' AND `card_location_arg` = 3");
             spellbook::$instance->notifyAllPlayers('draw','', array(
                 'id' => $idmateria1,
                 'color' => $colormateria1,
@@ -2453,7 +2453,7 @@ function argSoloAutel($parg1, $parg2)
         $ret['title'] = clienttranslate('${actplayer} must select a Materia for the opponent\'s board');
         $ret['titleyou'] = clienttranslate('${you} must select a Materia for the opponent\'s board');
 
-        $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+        $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
             foreach($ids as $idmateria)
             {
                 $ret["selectable"][] = 'materia_'.$idmateria;
@@ -2496,7 +2496,7 @@ function SoloAutelConfirm($parg1, $parg2, $varg1, $varg2)
 
     if($varg1 == "confirm")
         {*/
-            $nbreopponent = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaopponent'", true ));
+            $nbreopponent = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaopponent'", true ));
             $emplacementopponent = $nbreopponent+1;
             $explode = explode("_", $parg1);
             $idmateria = intval($explode[1]);
@@ -2515,16 +2515,16 @@ function SoloAutelConfirm($parg1, $parg2, $varg1, $varg2)
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            $nbre = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true ));
+            $nbre = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true ));
 
             if (($nbre < 7)&&($emplacementopponent!=4)&&($emplacementopponent!=9)&&($emplacementopponent!=14))
             {
                 for($i = $nbre+1; $i <=7; $i++)
                 {
                     spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiaautel', $i);
-                    $id = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
-                    $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
-                    $rune = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$i}");
+                    $id = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
+                    $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
+                    $rune = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$i}");
                     spellbook::$instance->notifyAllPlayers('draw','', array(
                         'id' => $id,
                         'color' => $color,
@@ -2542,7 +2542,7 @@ function SoloAutelConfirm($parg1, $parg2, $varg1, $varg2)
             {
                 for($i = 1; $i <=($nbre-7); $i++)
                     {
-                        $id = self::getUniqueValueFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg ={$i}");
+                        $id = self::getUniqueValueFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` ={$i}");
                         
                             spellbook::$instance->materia->moveCard( $id, 'discard');
                             spellbook::$instance->notifyAllPlayers('discard','', array(
@@ -2562,7 +2562,7 @@ function SoloAutelConfirm($parg1, $parg2, $varg1, $varg2)
             {
                 for($i = 1; $i <=$nbre; $i++)
                 {
-                    $ids = self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = 'materiaautel'", true );
+                    $ids = self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel'", true );
                     foreach($ids as $idmateriadiscard)
                     {
                         spellbook::$instance->materia->moveCard( $idmateriadiscard, 'discard');
@@ -2580,9 +2580,9 @@ function SoloAutelConfirm($parg1, $parg2, $varg1, $varg2)
                 {
                     spellbook::$instance->materia->pickCardForLocation( 'deck', 'materiaautel', $j);
                     
-                    $id = self::getUniqueValueFromDB("SELECT card_id FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
-                    $color = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
-                    $rune = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_location = 'materiaautel' AND card_location_arg = {$j}");
+                    $id = self::getUniqueValueFromDB("SELECT `card_id` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
+                    $color = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
+                    $rune = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_location` = 'materiaautel' AND `card_location_arg` = {$j}");
                     spellbook::$instance->notifyAllPlayers('draw','', array(
                         'id' => $id,
                         'color' => $color,

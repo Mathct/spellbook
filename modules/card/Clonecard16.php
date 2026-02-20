@@ -14,13 +14,13 @@ class Clonecard16 extends Card
 
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0")); //////ATTENTION set_color
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0"));
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0")); //////ATTENTION set_color
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
         $level = 4;
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
 
 
@@ -33,7 +33,7 @@ class Clonecard16 extends Card
         ////// Test Rouge //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirrouge = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 1", true );
+        $pouvoirrouge = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 1", true );
         $testpouvoirrouge = 0;
         foreach ($pouvoirrouge as $valeur) 
         {
@@ -46,10 +46,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirrouge == 0)
         {
-            $nombrerouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 1", true ));
+            $nombrerouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 1", true ));
             if ($nombrerouge >= 1)
             {
-            $nombrerunenonrouge = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 1 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonrouge = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 1 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonrouge>=1))
             {
@@ -77,7 +77,7 @@ class Clonecard16 extends Card
         ////// Test Violet //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirviolet = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 2", true );
+        $pouvoirviolet = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 2", true );
         $testpouvoirviolet = 0;
         foreach ($pouvoirviolet as $valeur) 
         {
@@ -90,10 +90,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirviolet == 0)
         {
-            $nombreviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 2", true ));
+            $nombreviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 2", true ));
             if ($nombreviolet >= 1)
             {
-            $nombrerunenonviolet = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 2 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonviolet = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 2 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonviolet>=1))
             {
@@ -121,7 +121,7 @@ class Clonecard16 extends Card
         ////// Test Vert //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirvert = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 3", true );
+        $pouvoirvert = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 3", true );
         $testpouvoirvert = 0;
         foreach ($pouvoirvert as $valeur) 
         {
@@ -134,10 +134,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirvert == 0)
         {
-            $nombrevert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 3", true ));
+            $nombrevert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 3", true ));
             if ($nombrevert >= 1)
             {
-            $nombrerunenonvert = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 3 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonvert = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 3 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonvert>=1))
             {
@@ -164,7 +164,7 @@ class Clonecard16 extends Card
         ////// Test Noir //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirnoir = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 4", true );
+        $pouvoirnoir = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 4", true );
         $testpouvoirnoir = 0;
         foreach ($pouvoirnoir as $valeur) 
         {
@@ -177,10 +177,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirnoir == 0)
         {
-            $nombrenoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 4", true ));
+            $nombrenoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 4", true ));
             if ($nombrenoir >= 1)
             {
-            $nombrerunenonnoir = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 4 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonnoir = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 4 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonnoir>=1))
             {
@@ -208,7 +208,7 @@ class Clonecard16 extends Card
         ////// Test Blanc //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirblanc = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 5", true );
+        $pouvoirblanc = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 5", true );
         $testpouvoirblanc = 0;
         foreach ($pouvoirblanc as $valeur) 
         {
@@ -221,10 +221,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirblanc == 0)
         {
-            $nombreblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 5", true ));
+            $nombreblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 5", true ));
             if ($nombreblanc >= 1)
             {
-            $nombrerunenonblanc = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 5 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonblanc = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 5 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonblanc>=1))
             {
@@ -252,7 +252,7 @@ class Clonecard16 extends Card
         ////// Test Bleu //////
         
             ///// est ce que sort a déjà été appris?////
-        $pouvoirbleu = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 6", true );
+        $pouvoirbleu = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 6", true );
         $testpouvoirbleu = 0;
         foreach ($pouvoirbleu as $valeur) 
         {
@@ -265,10 +265,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirbleu == 0)
         {
-            $nombrebleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 6", true ));
+            $nombrebleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 6", true ));
             if ($nombrebleu >= 1)
             {
-            $nombrerunenonbleu = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 6 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonbleu = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 6 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonbleu>=1))
             {
@@ -298,7 +298,7 @@ class Clonecard16 extends Card
         ////// Test Jaune //////
 
         ///// est ce que sort a déjà été appris?////
-        $pouvoirjaune = self::getObjectListFromDB( "SELECT typerune FROM cards WHERE player_id = {$this->player_id} AND set_color = 7", true );
+        $pouvoirjaune = self::getObjectListFromDB( "SELECT `typerune` FROM `cards` WHERE `player_id` = {$this->player_id} AND `set_color` = 7", true );
         $testpouvoirjaune = 0;
         foreach ($pouvoirjaune as $valeur) 
         {
@@ -311,10 +311,10 @@ class Clonecard16 extends Card
         //// est ce qu'au moins le pouvoir de niveau 3 peut etre appris?/////
         if($testpouvoirjaune == 0)
         {
-            $nombrejaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = 7", true ));
+            $nombrejaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = 7", true ));
             if ($nombrejaune >= 1)
             {
-            $nombrerunenonjaune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != 7 AND card_type_arg = {$typerune}", true ));
+            $nombrerunenonjaune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != 7 AND `card_type_arg` = {$typerune}", true ));
             $nbremaxrune = 0;
             if (($maxrune == 1)&&($nombrerunenonjaune>=1))
             {
@@ -385,20 +385,20 @@ class Clonecard16 extends Card
         $color = intval($explode[1]);
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0")); //////ATTENTION set_color
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0"));
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0")); //////ATTENTION `set_color`
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
         $level = 4;
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
         
         $reserve = 'materiareserve_'.$this->player_id;
 
         
-        $nbrecouleur = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type = {$color}", true ));
-        $nombrerune = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location = '{$reserve}' AND card_type != {$color} AND card_type_arg = {$typerune}", true ));
+        $nbrecouleur = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` = {$color}", true ));
+        $nombrerune = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` = '{$reserve}' AND `card_type` != {$color} AND `card_type_arg` = {$typerune}", true ));
         
         $maxrune = $level -3;
         $nbremaxrune = 0;
@@ -481,9 +481,9 @@ class Clonecard16 extends Card
         $explode = explode("_", $parg1);
         $color = intval ($explode[1]);
         $lvl = intval ($explode[3]);
-        $selectable = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}' AND card_type !={$color}", true );
+        $selectable = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}' AND `card_type` !={$color}", true );
         
-        $selected = self::getObjectListFromDB( "SELECT card_id id FROM materia WHERE card_location ='{$location}' AND card_type ={$color}", true );
+        $selected = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `materia` WHERE `card_location` ='{$location}' AND `card_type` ={$color}", true );
         $countselected = count($selected);
 
         foreach ($selectable as $materia)
@@ -611,25 +611,25 @@ class Clonecard16 extends Card
         $player = spellbook::$instance->getGameStateValue('idclone');
         if (spellbook::$instance->getGameStateValue('solo')==0)
         {
-        $level = intval(self::getUniqueValueFromDB("SELECT power FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0")); //////ATTENTION set_color
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$player} AND set_color = 6 AND typerune !=0"));
+        $level = intval(self::getUniqueValueFromDB("SELECT `power` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0")); //////ATTENTION set_color
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$player} AND `set_color` = 6 AND `typerune` !=0"));
         }
         if (spellbook::$instance->getGameStateValue('solo')==1)
         {
         $level = 4;
-        $typerune = intval(self::getUniqueValueFromDB("SELECT typerune FROM cards WHERE player_id={$this->player_id} AND set_color = 5 AND typerune !=0"));
+        $typerune = intval(self::getUniqueValueFromDB("SELECT `typerune` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 5 AND `typerune` !=0"));
         }
 
         foreach ($tableausanszero as $id)
         {
-            $testcolor = intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id = {$id}"));
+            $testcolor = intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id` = {$id}"));
             if($testcolor == spellbook::$instance->getGameStateValue('color'))
             {
                 $nombre = $nombre +1; 
             }
             else
             {
-                $testrune = intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id = {$id}"));
+                $testrune = intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id` = {$id}"));
                 
                 if ($testrune == $typerune)
                 {
@@ -701,7 +701,7 @@ class Clonecard16 extends Card
 
         foreach($tableausanszero as $materia)
         {
-            $testcolor = self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id = {$materia}");
+            $testcolor = self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id` = {$materia}");
             if($testcolor == spellbook::$instance->getGameStateValue('color'))
             {
                 $ret["selectable"][] = 'materia_'.$materia;
@@ -781,13 +781,13 @@ class Clonecard16 extends Card
         {*/
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
 
-            $setcardjaune = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE player_id={$this->player_id} AND set_color = 7 AND power = 3"));
+            $setcardjaune = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `player_id`={$this->player_id} AND `set_color` = 7 AND `power` = 3"));
             $familier = 'materiafamilier_'.$this->player_id;
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
             if (((spellbook::$instance->getGameStateValue('color')==7)&&(spellbook::$instance->getGameStateValue('position')==3)&&($setcardjaune==3)&&($countfamilier <=13))||(($this->player_p37 == 1)&&($countfamilier <=13)))
             {
-                self::DbQuery( "INSERT INTO bonuslearn (player_id, materiacard, listeselected, placeoncard) VALUES ({$this->player_id}, '{$selected}', '{$parg1}', '{$parg2}')" );
+                self::DbQuery( "INSERT INTO `bonuslearn` (`player_id`, `materiacard`, `listeselected`, `placeoncard`) VALUES ({$this->player_id}, '{$selected}', '{$parg1}', '{$parg2}')" );
                 spellbook::$instance->addPendingTarget($this->player_id, "Clonecard16", "LearnBonus", $parg1);
             }
         
@@ -804,16 +804,16 @@ class Clonecard16 extends Card
 
             $explode2 = explode('_', $parg2);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
             
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" (Clone)' ), array(
@@ -843,10 +843,10 @@ class Clonecard16 extends Card
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Clonecard".$set.$color, "Power".$power);
             }
             else
@@ -870,9 +870,9 @@ class Clonecard16 extends Card
         
 
         $familier = 'materiafamilier_'.$this->player_id;
-        $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+        $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
 
-        $selected = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+        $selected = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
         $explode2 = explode('_', $selected);
         $idselected = $explode2[1];
 
@@ -921,7 +921,7 @@ class Clonecard16 extends Card
     {
         if($varg1 == "cancel")
         {
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
             spellbook::$instance->addPendingTarget($this->player_id, "Clonecard16", "Step4", $parg1);
         }
 
@@ -932,7 +932,7 @@ class Clonecard16 extends Card
             $idstore1 = intval($explode1[1]);
             $familier = 'materiafamilier_'.$this->player_id;
 
-            $listeselected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
+            $listeselected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode = explode('_', $listeselected);
             $tableau = array_map('intval', $explode);
             /// enlever les zero du tableau
@@ -943,19 +943,19 @@ class Clonecard16 extends Card
             $tableausanszero = array_values($tableausanszero);
 
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
-            $placeoncard = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+            $placeoncard = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode2 = explode('_', $placeoncard);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
 
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" level ${power} (Clone)' ), array(
@@ -983,7 +983,7 @@ class Clonecard16 extends Card
 
 
             
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             
                 $nouvelemplacementfamilier = $countfamilier +1;
                 spellbook::$instance->materia->moveCard( $explode1[1], $familier, $nouvelemplacementfamilier);
@@ -994,8 +994,8 @@ class Clonecard16 extends Card
                     )
                     );
 
-            $col= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore1}"));
-            $signe= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore1}"));
+            $col= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore1}"));
+            $signe= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore1}"));
             $log[] = ($col*10)+$signe;
     
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} stores ${log1} ("COMMUNION")'), array(
@@ -1012,13 +1012,13 @@ class Clonecard16 extends Card
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
 
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Card".$set.$color, "Power".$power);
             }
             else
@@ -1060,8 +1060,8 @@ class Clonecard16 extends Card
     {
         /*if($varg1 == "cancel")
         {
-            $selected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            $selected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
             spellbook::$instance->addPendingTarget($this->player_id, "Clonecard16", "Step4", $selected);
         }
 
@@ -1073,7 +1073,7 @@ class Clonecard16 extends Card
             $idstore2 = intval($explode1[1]);
             $familier = 'materiafamilier_'.$this->player_id;
 
-            $listeselected = self::getUniqueValueFromDB("SELECT listeselected FROM bonuslearn WHERE player_id={$this->player_id}");
+            $listeselected = self::getUniqueValueFromDB("SELECT `listeselected` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode = explode('_', $listeselected);
             $tableau = array_map('intval', $explode);
             /// enlever les zero du tableau
@@ -1084,19 +1084,19 @@ class Clonecard16 extends Card
             $tableausanszero = array_values($tableausanszero);
 
             $selected = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id.'_'.spellbook::$instance->getGameStateValue('position');
-            $placeoncard = self::getUniqueValueFromDB("SELECT placeoncard FROM bonuslearn WHERE player_id={$this->player_id}");
+            $placeoncard = self::getUniqueValueFromDB("SELECT `placeoncard` FROM `bonuslearn` WHERE `player_id`={$this->player_id}");
             $explode2 = explode('_', $placeoncard);
             $idselected = intval($explode2[1]);
-            $runeselected = self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idselected}");
+            $runeselected = self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idselected}");
             $location = 'materiacard_'.spellbook::$instance->getGameStateValue('color').'_'.$this->player_id;
             $emplacement = spellbook::$instance->getGameStateValue('position');
             $power = intval(spellbook::$instance->getGameStateValue('position')) +2;
             $color = spellbook::$instance->getGameStateValue('color');
 
             spellbook::$instance->materia->moveCard( $idselected, $location, $emplacement);
-            self::DbQuery( "UPDATE cards set typerune = {$runeselected} WHERE set_color = '{$color}' AND power = {$power} AND player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE `cards` set `typerune` = {$runeselected} WHERE `set_color` = '{$color}' AND `power` = {$power} AND `player_id` = {$this->player_id}" );
 
-            $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             $index = $set.$color;
             
             spellbook::$instance->notifyAllPlayers('move',clienttranslate( '${player_name} learns "${name}" level ${power} (Clone)' ), array(
@@ -1124,7 +1124,7 @@ class Clonecard16 extends Card
 
 
             
-            $countfamilier = count(self::getObjectListFromDB( "SELECT card_id FROM materia WHERE card_location ='{$familier}'", true ));
+            $countfamilier = count(self::getObjectListFromDB( "SELECT `card_id` FROM `materia` WHERE `card_location` ='{$familier}'", true ));
             for ($i=1; $i <= 2; $i++)
             {
                 $nouvelemplacementfamilier = $countfamilier +$i;
@@ -1137,11 +1137,11 @@ class Clonecard16 extends Card
                     );
             }
 
-            $col1= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore1}"));
-            $signe1= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore1}"));
+            $col1= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore1}"));
+            $signe1= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore1}"));
             $log[] = ($col1*10)+$signe1;
-            $col2= intval(self::getUniqueValueFromDB("SELECT card_type FROM materia WHERE card_id={$idstore2}"));
-            $signe2= intval(self::getUniqueValueFromDB("SELECT card_type_arg FROM materia WHERE card_id={$idstore2}"));
+            $col2= intval(self::getUniqueValueFromDB("SELECT `card_type` FROM `materia` WHERE `card_id`={$idstore2}"));
+            $signe2= intval(self::getUniqueValueFromDB("SELECT `card_type_arg` FROM `materia` WHERE `card_id`={$idstore2}"));
             $log[] = ($col2*10)+$signe2;
     
             spellbook::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} stores ${log1} ${log2} ("COMMUNION")'), array(
@@ -1158,13 +1158,13 @@ class Clonecard16 extends Card
 
             spellbook::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1500] );
 
-            self::DbQuery("DELETE FROM bonuslearn WHERE player_id = {$this->player_id}");
+            self::DbQuery("DELETE FROM `bonuslearn` WHERE `player_id` = {$this->player_id}");
 
 
-            $type = intval(self::getUniqueValueFromDB("SELECT type FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+            $type = intval(self::getUniqueValueFromDB("SELECT `type` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
             if(($type == 1)||($type == 2))
             {
-                $set = intval(self::getUniqueValueFromDB("SELECT set_id FROM cards WHERE power = {$power} AND set_color = '{$color}' AND player_id = {$this->player_id}"));
+                $set = intval(self::getUniqueValueFromDB("SELECT `set_id` FROM `cards` WHERE `power` = {$power} AND `set_color` = '{$color}' AND `player_id` = {$this->player_id}"));
                 spellbook::$instance->addPendingTarget($this->player_id, "Clonecard".$set.$color, "Power".$power);
             }
             else
